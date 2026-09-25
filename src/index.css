@@ -1,25 +1,151 @@
 @import "tailwindcss";
 
-html {
-  scroll-behavior: auto;
+@layer base {
+  :root {
+    --terracotta: #C05A3E;
+    --terracotta-dark: #8F3720;
+    --terracotta-light: #E78A70;
+    --terracotta-soft: #F9EFEA;
+
+    --beige: #F6F1E7;
+    --beige-card: #FFFFFF;
+    --beige-dark: #E8DDCB;
+    --beige-deep: #7D6B5A;
+
+    --dusty-blue: #587989;
+    --dusty-blue-dark: #375361;
+    --dusty-blue-light: #90B0BF;
+    --dusty-blue-soft: #E6EFF2;
+
+    --white: #FFFFFF;
+    --ink: #26211E;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+
+  body {
+    margin: 0;
+    background: #F6F1E7;
+    color: #26211E;
+    font-family: "Plus Jakarta Sans", system-ui, -apple-system, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, .font-serif {
+    font-family: "Newsreader", Georgia, serif;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  ::selection {
+    background: #C05A3E;
+    color: #FFFFFF;
+  }
 }
 
-body {
-  margin: 0;
-  background: #080b12;
-  font-family: Inter, system-ui, sans-serif;
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+}
+::-webkit-scrollbar-track {
+  background: #EFE7DA;
+}
+::-webkit-scrollbar-thumb {
+  background: #C05A3E;
+  border-radius: 9999px;
+  border: 2px solid #EFE7DA;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8F3720;
 }
 
-* {
-  box-sizing: border-box;
+/* Book Paper Grid & Ruled line textures */
+.paper-ruled {
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    rgba(88, 121, 137, 0.12) 28px
+  );
 }
 
-button,
-a {
-  -webkit-tap-highlight-color: transparent;
+.paper-grid {
+  background-size: 24px 24px;
+  background-image: 
+    linear-gradient(to right, rgba(192, 90, 62, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(192, 90, 62, 0.05) 1px, transparent 1px);
 }
 
-::selection {
-  background: #67e8f9;
-  color: #080b12;
+.paper-texture {
+  background-color: #FDFBF7;
+  background-image: radial-gradient(rgba(192, 90, 62, 0.04) 1px, transparent 0);
+  background-size: 16px 16px;
+}
+
+/* Diary Binding Crease Effect */
+.diary-spine-shadow {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.22) 0%,
+    rgba(0, 0, 0, 0.07) 35%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(0, 0, 0, 0.07) 65%,
+    rgba(0, 0, 0, 0.22) 100%
+  );
+}
+
+/* ================= NORMAL SCROLL REVEAL (FOR OTHER PAGES) ================= */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(32px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.is-revealed {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+.reveal-delay-1 { transition-delay: 0.1s; }
+.reveal-delay-2 { transition-delay: 0.2s; }
+.reveal-delay-3 { transition-delay: 0.3s; }
+.reveal-delay-4 { transition-delay: 0.4s; }
+
+/* Home page alternating scroll reveal animations */
+.reveal-init-left {
+  opacity: 0;
+  transform: translateX(-60px) rotate(-3deg);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.reveal-init-right {
+  opacity: 0;
+  transform: translateX(60px) rotate(3deg);
+  transition: opacity 0.85s cubic-bezier(0.16, 1, 0.3, 1), transform 0.85s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform, opacity;
+}
+
+.reveal-visible {
+  opacity: 1 !important;
+  transform: translateX(0) translateY(0) rotate(0deg) scale(1) !important;
+}
+
+/* Ribbon Bookmark Animation */
+@keyframes swayRibbon {
+  0%, 100% {
+    transform: rotate(-1deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+.animate-ribbon {
+  animation: swayRibbon 4.5s ease-in-out infinite;
+  transform-origin: top center;
 }

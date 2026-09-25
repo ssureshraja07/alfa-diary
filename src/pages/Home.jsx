@@ -1,499 +1,236 @@
-import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  Float,
-  Environment,
-  OrbitControls,
-} from "@react-three/drei";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { 
+  ArrowRight, 
+  Sparkles, 
+  Feather, 
+  BookOpen, 
+  Layers, 
+  ShieldCheck, 
+  Palette, 
+  Eye, 
+  Compass, 
+  Calendar, 
+  CheckCircle2, 
+  Bookmark 
+} from "lucide-react";
 
 import ProductCard from "../components/ProductCard";
 import Product3DModal from "../components/Product3DModal";
+import ScrollRevealDiaries from "../components/ScrollRevealDiaries";
+import OpenedDiaryFooter from "../components/OpenedDiaryFooter";
 import { products } from "../data/products";
-
-function Diary() {
-  const diary = useRef();
-
-  useFrame((state) => {
-    if (!diary.current) return;
-
-    diary.current.rotation.y =
-      Math.sin(state.clock.elapsedTime * 0.5) * 0.12;
-
-    diary.current.rotation.x =
-      Math.sin(state.clock.elapsedTime * 0.35) * 0.04;
-  });
-
-  return (
-    <group ref={diary} rotation={[0.15, -0.25, 0]}>
-      <mesh castShadow receiveShadow>
-        <boxGeometry args={[3.8, 0.35, 5]} />
-        <meshStandardMaterial color="#8f4635" roughness={0.45} />
-      </mesh>
-
-      <mesh
-        position={[0, 0.22, 0]}
-        castShadow
-        receiveShadow
-      >
-        <boxGeometry args={[3.55, 0.18, 4.75]} />
-        <meshStandardMaterial color="#f5f0df" roughness={0.9} />
-      </mesh>
-
-      <mesh position={[0, 0.33, 0]}>
-        <boxGeometry args={[0.04, 0.025, 4.5]} />
-        <meshStandardMaterial color="#c8bfa9" />
-      </mesh>
-
-      <mesh position={[1.2, 0.42, 0]}>
-        <boxGeometry args={[0.12, 0.04, 2.4]} />
-        <meshStandardMaterial color="#d99078" />
-      </mesh>
-    </group>
-  );
-}
-
-function Pen() {
-  return (
-    <group
-      rotation={[0.15, 0.2, -0.65]}
-      position={[3.2, 0.5, 1]}
-    >
-      <mesh castShadow>
-        <cylinderGeometry args={[0.08, 0.08, 4.2, 24]} />
-        <meshStandardMaterial
-          color="#292421"
-          metalness={0.7}
-          roughness={0.25}
-        />
-      </mesh>
-
-      <mesh position={[0, 2.15, 0]}>
-        <coneGeometry args={[0.08, 0.35, 24]} />
-        <meshStandardMaterial
-          color="#d4af37"
-          metalness={0.8}
-          roughness={0.2}
-        />
-      </mesh>
-    </group>
-  );
-}
-
-function Desk() {
-  return (
-    <mesh receiveShadow position={[0, -0.8, 0]}>
-      <boxGeometry args={[14, 0.35, 10]} />
-      <meshStandardMaterial color="#21180f" roughness={0.65} />
-    </mesh>
-  );
-}
-
-function Scene() {
-  return (
-    <>
-      <ambientLight intensity={1.2} />
-
-      <directionalLight
-        position={[5, 8, 5]}
-        intensity={3}
-        castShadow
-      />
-
-      <pointLight
-        position={[-4, 3, 2]}
-        intensity={2}
-        color="#d99078"
-      />
-
-      <Environment preset="city" />
-
-      <Float
-        speed={1.2}
-        rotationIntensity={0.25}
-        floatIntensity={0.4}
-      >
-        <Diary />
-      </Float>
-
-      <Float
-        speed={1.5}
-        rotationIntensity={0.4}
-        floatIntensity={0.5}
-      >
-        <Pen />
-      </Float>
-
-      <Desk />
-
-      <OrbitControls
-        enableZoom={false}
-        enablePan={false}
-        autoRotate
-        autoRotateSpeed={0.3}
-        minPolarAngle={Math.PI / 2.8}
-        maxPolarAngle={Math.PI / 1.8}
-      />
-    </>
-  );
-}
+import heroDiariesImg from "../images/diaries-2027-hero.jpg";
 
 export default function Home() {
-  const homeProducts = products.slice(0, 10);
-
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [activeCategory, setActiveCategory] = useState("all");
+
+  const homeProducts = products.slice(0, 8);
+
+  const filteredProducts = activeCategory === "all"
+    ? homeProducts
+    : homeProducts.filter((p) => p.category?.toLowerCase().includes(activeCategory.toLowerCase()));
 
   return (
-    <main className="min-h-screen overflow-hidden bg-[#d99078] text-[#292421]">
+    <main className="min-h-screen bg-[#F6F1E7] text-[#26211E]">
+      
+      {/* ================= HERO SECTION (4+ 2027 DIARIES ON RIGHT BG) ================= */}
+      <section className="relative min-h-[95vh] overflow-hidden pt-20 flex items-center">
+        
+        {/* Background Image: 4+ Diaries set on the right side of desk */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src={heroDiariesImg}
+            alt="4+ Luxury 2027 Alfa Diaries in terracotta, dusty blue, beige and white on oak desk"
+            className="h-full w-full object-cover object-right md:object-center"
+          />
 
-      {/* ================= HERO ================= */}
-
-      <section className="relative h-screen overflow-hidden bg-[#292421] text-white">
-
-        <div className="absolute inset-0">
-          <Canvas
-            shadows
-            camera={{
-              position: [0, 5, 10],
-              fov: 45,
-            }}
-          >
-            <Scene />
-          </Canvas>
+          {/* Left-to-Right Soft Gradient: Keeps left side clean & readable for text, lets right side shine */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#F6F1E7] via-[#F6F1E7]/90 sm:via-[#F6F1E7]/65 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#F6F1E7] via-transparent to-transparent" />
         </div>
 
-        <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#292421]/30 via-transparent to-[#292421]" />
+        {/* Hero Content Grid: Left side text, leaving right side open to showcase diaries */}
+        <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-16 sm:py-24">
+          
+          <div className="max-w-2xl space-y-6">
+            
+            {/* 2027 New Collection Pill */}
+            <div className="inline-flex items-center gap-2 rounded-full border border-[#C05A3E]/30 bg-white/95 px-4 py-1.5 text-xs font-black uppercase tracking-widest text-[#C05A3E] shadow-sm backdrop-blur-md">
+              <Calendar size={14} className="text-[#C05A3E]" />
+              <span>New 2027 Edition Folios • In Stock Now</span>
+            </div>
 
-        <div className="relative z-10 flex h-full items-center">
+            {/* Main Headline */}
+            <h1 className="text-5xl font-extrabold leading-[1.02] tracking-tight sm:text-6xl lg:text-7xl font-serif text-[#26211E]">
+              WHERE YOUR
+              <br />
+              STORIES FIND
+              <br />
+              <span className="text-[#C05A3E]">
+                SANCTUARY.
+              </span>
+            </h1>
 
-          <div className="mx-auto w-full max-w-7xl px-6">
+            {/* Description */}
+            <p className="max-w-xl text-base leading-relaxed text-[#7D6B5A] sm:text-lg">
+              Crafted for 2027 in our Sivakasi atelier. Choose from rich terracotta leather, tranquil dusty blue linen, raw beige cloth, and chalk white vellum—all hand-bound with archival lay-flat stitching.
+            </p>
 
-            <div className="max-w-2xl">
-
-              <p className="mb-5 text-xs font-bold uppercase tracking-[0.4em] text-[#d99078]">
-                A new way to write
-              </p>
-
-              <h1 className="text-6xl font-black leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl">
-                WRITE
-                <br />
-                YOUR
-                <br />
-                <span className="text-[#d99078]">
-                  STORY.
-                </span>
-              </h1>
-
-              <p className="mt-7 max-w-lg text-base leading-7 text-[#f5f0e6]/70 sm:text-lg">
-                Premium diaries and stationery designed for ideas,
-                memories, plans and everything in between.
-              </p>
-
+            {/* Action Buttons */}
+            <div className="flex flex-wrap items-center gap-4 pt-2">
               <Link
                 to="/products"
-                className="mt-8 inline-flex rounded-full bg-[#f5f0e6] px-7 py-4 font-bold text-[#292421] transition duration-300 hover:-translate-y-1 hover:bg-[#d99078]"
+                className="group flex items-center gap-2 rounded-full bg-[#C05A3E] px-8 py-4 text-xs font-bold uppercase tracking-widest text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:bg-[#8F3720] hover:shadow-xl"
               >
-                Explore Collection
+                <span>Explore 2027 Folios</span>
+                <ArrowRight size={15} className="transition group-hover:translate-x-1" />
               </Link>
 
+              <Link
+                to="/gallery"
+                className="flex items-center gap-2 rounded-full border border-[#7D6B5A]/30 bg-white/90 px-7 py-4 text-xs font-bold uppercase tracking-widest text-[#26211E] shadow-sm transition hover:border-[#C05A3E] hover:text-[#C05A3E]"
+              >
+                <Palette size={15} className="text-[#587989]" />
+                <span>View 2027 Lookbook</span>
+              </Link>
+            </div>
+
+            {/* Key Quality Micro-badges */}
+            <div className="flex flex-wrap items-center gap-6 pt-4 text-xs font-semibold text-[#7D6B5A]">
+              <div className="flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#C05A3E]" />
+                <span>120–160 GSM Cotton Rag</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#587989]" />
+                <span>180° Lay-Flat Guarantee</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="h-2.5 w-2.5 rounded-full bg-[#E8DDCB] border border-black/20" />
+                <span>National & International Standards</span>
+              </div>
             </div>
 
           </div>
 
         </div>
 
-        <div className="absolute bottom-8 left-1/2 z-20 -translate-x-1/2 text-center">
-
-          <div className="text-[10px] font-bold uppercase tracking-[0.35em] text-white/50">
-            Scroll to explore
-          </div>
-
-          <div className="mx-auto mt-3 h-12 w-px animate-pulse bg-[#d99078]" />
-
-        </div>
-
       </section>
 
+      {/* ================= COLOR STORY BANNER ================= */}
+      <section className="border-y border-[#E8DDCB] bg-white py-8 px-6">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#C05A3E] text-white">
+              <Palette size={16} />
+            </span>
+            <span className="text-xs font-extrabold uppercase tracking-widest text-[#26211E]">
+              The Four 2027 Colorways:
+            </span>
+          </div>
 
-      {/* ================= PRODUCTS ================= */}
+          <div className="flex flex-wrap items-center gap-4 sm:gap-8 text-xs font-bold text-[#7D6B5A]">
+            <div className="flex items-center gap-2">
+              <span className="h-4 w-4 rounded-full bg-[#C05A3E] shadow-xs" />
+              <span>Terracotta (Gold 2027 Stamp)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-4 w-4 rounded-full bg-[#587989] shadow-xs" />
+              <span>Dusty Blue (Silver 2027 Plaque)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-4 w-4 rounded-full bg-[#E8DDCB] border border-black/20 shadow-xs" />
+              <span>Beige Linen (2027 Ribbon)</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="h-4 w-4 rounded-full bg-white border border-slate-300 shadow-xs" />
+              <span>Pure White (2027 Embossed)</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
-      <section
-        id="collection"
-        className="bg-[#d99078] py-32"
-      >
+      {/* ================= SCROLL REVEAL DIARIES (LEFT & RIGHT) ================= */}
+      <ScrollRevealDiaries onSelectProduct={setSelectedProduct} />
 
-        <div className="mx-auto max-w-7xl px-6">
+      
 
-          {/* TOP */}
+      {/* ================= ARTISANAL CRAFT SHOWCASE ================= */}
+      <section className="relative overflow-hidden bg-white px-6 py-24 sm:py-32">
+        <div className="mx-auto max-w-7xl">
+          
+          <div className="grid gap-12 lg:grid-cols-12 lg:items-center">
+            
+            <div className="lg:col-span-6 space-y-6">
+              <span className="text-xs font-bold uppercase tracking-widest text-[#C05A3E]">
+                The Anatomy of a Forever Journal
+              </span>
 
-          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
-
-            <div>
-
-              <p className="text-xs font-black uppercase tracking-[0.35em] text-[#8f4635]">
-                The collection
-              </p>
-
-              <h2 className="mt-4 text-5xl font-black tracking-tight text-[#292421]">
-                Made to be written in.
+              <h2 className="text-3xl sm:text-5xl font-black text-[#26211E] font-serif leading-tight">
+                Designed to Be Touched, Written, and Cherished.
               </h2>
 
-              <p className="mt-4 max-w-xl text-[#624d44]">
-                Explore our carefully selected collection of diaries,
-                journals and notebooks.
+              <p className="text-sm sm:text-base leading-relaxed text-[#7D6B5A]">
+                Standard notebooks crack at the spine within months. Alfa Diaries are constructed with Smyth-sewn signatures, allowing each page to open flat without stress on the paper fibres.
               </p>
 
-            </div>
-
-            {/* Explore more */}
-
-            <Link
-              to="/products"
-              className="group inline-flex w-fit items-center gap-2 rounded-full border-2 border-[#292421]/20 px-6 py-3 text-sm font-bold text-[#292421] transition duration-300 hover:-translate-y-1 hover:border-[#292421] hover:bg-[#292421] hover:text-[#f5f0e6]"
-            >
-              Explore more
-              <span className="transition group-hover:translate-x-1">
-                →
-              </span>
-            </Link>
-
-          </div>
-
-
-          {/* 10 PRODUCTS */}
-
-          <div className="mt-16 grid gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-
-            {homeProducts.map((product, index) => (
-
-              <div
-                key={product.id}
-                className="animate-[fadeIn_0.7s_ease-out_both]"
-                style={{
-                  animationDelay: `${index * 80}ms`,
-                }}
-              >
-
-                {/* CLICK → 3D MODAL */}
-
-                <button
-                  type="button"
-                  onClick={() => setSelectedProduct(product)}
-                  className="group block w-full text-left transition duration-500 hover:-translate-y-3"
-                >
-
-                  <div className="overflow-hidden rounded-[2rem] bg-[#f5f0e6] p-4 shadow-sm transition duration-500 hover:shadow-2xl">
-
-                    <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-[#ead9ca]">
-
-                      {product.image ? (
-                        <img
-                          src={product.image}
-                          alt={product.name}
-                          className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
-                        />
-                      ) : (
-                        <div className="flex h-full items-center justify-center bg-[#ead9ca]">
-
-                          <div className="relative h-56 w-40 rotate-[-8deg] rounded-lg bg-[#292421] shadow-2xl transition duration-700 group-hover:rotate-0 group-hover:scale-105">
-
-                            <div className="absolute inset-4 rounded border border-[#d99078]/30" />
-
-                          </div>
-
-                        </div>
-                      )}
-
-                    </div>
-
-
-                    {/* DETAILS */}
-
-                    <div className="flex items-center justify-between px-2 pb-2 pt-5">
-
-                      <div>
-
-                        <h3 className="font-black text-[#292421]">
-                          {product.name}
-                        </h3>
-
-                        <p className="mt-1 text-xs text-[#624d44]">
-                          Premium notebook
-                        </p>
-
-                      </div>
-
-                      {product.price && (
-                        <span className="font-black text-[#8f4635]">
-                          {product.price}
-                        </span>
-                      )}
-
-                    </div>
-
-                  </div>
-
-                </button>
-
+              <div className="grid grid-cols-2 gap-4 pt-2">
+                <div className="rounded-2xl border border-[#E8DDCB] bg-[#F6F1E7]/50 p-4">
+                  <span className="font-mono text-xs font-bold text-[#C05A3E]">01 / SPINE</span>
+                  <h4 className="mt-1 font-bold text-sm text-[#26211E]">Smyth-Sewn Signatures</h4>
+                  <p className="mt-1 text-xs text-[#7D6B5A]">Woven with pure waxed linen thread.</p>
+                </div>
+                <div className="rounded-2xl border border-[#E8DDCB] bg-[#F6F1E7]/50 p-4">
+                  <span className="font-mono text-xs font-bold text-[#587989]">02 / PAPER</span>
+                  <h4 className="mt-1 font-bold text-sm text-[#26211E]">120 GSM Cotton Vellum</h4>
+                  <p className="mt-1 text-xs text-[#7D6B5A]">Feather-resistant to fountain pen inks.</p>
+                </div>
               </div>
 
-            ))}
-
-          </div>
-
-
-          {/* BOTTOM EXPLORE MORE */}
-
-          <div className="mt-16 text-center">
-
-            <Link
-              to="/products"
-              className="group inline-flex items-center gap-3 rounded-full bg-[#292421] px-8 py-4 text-sm font-black uppercase tracking-[0.2em] text-[#f5f0e6] transition duration-300 hover:-translate-y-1 hover:bg-[#8f4635]"
-            >
-              Explore more products
-              <span className="text-lg transition group-hover:translate-x-2">
-                →
-              </span>
-            </Link>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      {/* ================= CONTACT ================= */}
-
-      <section
-        id="contact"
-        className="relative overflow-hidden bg-[#292421] py-32"
-      >
-
-        <div className="mx-auto max-w-4xl px-6">
-
-          <div className="rotate-[-2deg] rounded-[2rem] bg-[#f5f0e6] p-8 text-[#292421] shadow-2xl sm:p-14">
-
-            <p className="font-serif text-2xl italic">
-              Dear writer,
-            </p>
-
-            <h2 className="mt-8 text-4xl font-black sm:text-6xl">
-              Have something
-              <br />
-              to say?
-            </h2>
-
-            <p className="mt-7 max-w-xl text-lg leading-8 text-[#624d44]">
-              We'd love to hear from you. Ask us about our products,
-              custom diaries, bulk orders or simply tell us what
-              you're writing next.
-            </p>
-
-            <div className="mt-10 flex flex-wrap gap-4">
-
-              <Link
-                to="/contact"
-                className="rounded-full bg-[#292421] px-7 py-4 font-bold text-white transition hover:-translate-y-1 hover:bg-[#8f4635]"
-              >
-                Get in touch
-              </Link>
-
-              <Link
-                to="/products"
-                className="rounded-full border border-[#292421]/20 px-7 py-4 font-bold transition hover:border-[#292421]"
-              >
-                Visit our collection
-              </Link>
-
+              <div className="pt-2">
+                <Link
+                  to="/aboutus"
+                  className="inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#C05A3E] transition hover:text-[#8F3720]"
+                >
+                  <span>Learn more about our Sivakasi workshop</span>
+                  <ArrowRight size={14} />
+                </Link>
+              </div>
             </div>
 
-            <p className="mt-16 font-serif text-lg italic text-[#624d44]/60">
-              Until the next chapter...
-            </p>
+            <div className="lg:col-span-6">
+              <div className="relative rounded-[2.5rem] border border-[#E8DDCB] bg-gradient-to-br from-[#F9EFEA] via-[#E8DDCB] to-[#E6EFF2] p-8 sm:p-12 shadow-inner">
+                <div className="space-y-6">
+                  <div className="flex items-center gap-3">
+                    <span className="h-3 w-3 rounded-full bg-[#C05A3E]" />
+                    <span className="text-xs font-bold uppercase tracking-wider text-[#26211E]">
+                      The Bookbinder's Promise
+                    </span>
+                  </div>
 
-          </div>
+                  <p className="font-serif italic text-xl sm:text-2xl text-[#26211E] leading-relaxed">
+                    "A blank page is not merely paper; it is an open horizon waiting for the rhythm of your honest thoughts."
+                  </p>
 
-        </div>
-
-      </section>
-
-
-      {/* ================= FOOTER ================= */}
-
-      <footer className="border-t border-white/10 bg-[#292421] px-6 py-12 text-white">
-
-        <div className="mx-auto grid max-w-7xl gap-10 md:grid-cols-3 md:items-center">
-
-          <div className="text-center md:text-left">
-
-            <div className="text-xl font-black tracking-tight">
-              DIARY<span className="text-[#d99078]">.</span>
+                  <div className="border-t border-[#7D6B5A]/20 pt-4 flex items-center justify-between text-xs text-[#7D6B5A]">
+                    <span className="font-semibold">— Alfa Diaries Pvt Ltd</span>
+                    <span className="font-mono font-bold text-[#587989]">Sivakasi, Tamil Nadu</span>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <p className="mt-2 text-sm text-white/40">
-              Write it. Keep it. Remember it.
-            </p>
-
-          </div>
-
-          <div className="text-center">
-
-            <p className="text-xs font-black uppercase tracking-[0.3em] text-[#d99078]">
-              Visit / Contact
-            </p>
-
-            <p className="mt-3 text-sm leading-6 text-white/60">
-              12, Main Street,
-              <br />
-              Thoothukudi, Tamil Nadu – 628001
-            </p>
-
-            <a
-              href="tel:+919876543210"
-              className="mt-3 inline-block text-sm font-bold text-white transition hover:text-[#d99078]"
-            >
-              +91 98765 43210
-            </a>
-
-          </div>
-
-          <div className="flex justify-center gap-6 text-sm font-medium text-white/50 md:justify-end">
-
-            <a
-              href="#"
-              className="transition hover:text-[#d99078]"
-            >
-              Instagram
-            </a>
-
-            <a
-              href="#"
-              className="transition hover:text-[#d99078]"
-            >
-              WhatsApp
-            </a>
-
-            <Link
-              to="/products"
-              className="transition hover:text-[#d99078]"
-            >
-              Store
-            </Link>
-
           </div>
 
         </div>
+      </section>
 
-        <div className="mx-auto mt-10 max-w-7xl border-t border-white/10 pt-6 text-center text-xs text-white/30">
-          © 2026 DIARY. All rights reserved.
-        </div>
+      {/* ================= OPENED DIARY FOOTER ================= */}
+      <OpenedDiaryFooter />
 
-      </footer>
-
-
-      {/* ================= 3D MODAL ================= */}
-
+      {/* ================= 3D PREVIEW MODAL ================= */}
       <Product3DModal
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}

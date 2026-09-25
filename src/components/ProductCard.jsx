@@ -1,69 +1,79 @@
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Box } from "lucide-react";
 
 export default function ProductCard({ product }) {
+  // Determine accent color based on number/id
+  const isTerracotta = parseInt(product.number, 10) % 2 === 1;
+  const accentColor = isTerracotta ? "#C05A3E" : "#587989";
+  const bgTint = isTerracotta ? "bg-[#F9EFEA]" : "bg-[#E6EFF2]";
+
   return (
-    <article className="group relative overflow-hidden rounded-[2rem] border border-[#5f3b2f]/10 bg-[#f7ead9] p-4 shadow-sm transition-all duration-500 hover:-translate-y-3 hover:shadow-2xl">
-
-      {/* ================= PRODUCT IMAGE ================= */}
-
-      <div className="relative aspect-[4/5] overflow-hidden rounded-[1.5rem] bg-[#dfb79f]">
-
+    <article className="group relative overflow-hidden rounded-[2rem] border border-[#E8DDCB] bg-white p-4 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:shadow-xl">
+      
+      {/* ================= PRODUCT IMAGE CONTAINER ================= */}
+      <div className={`relative aspect-[4/5] overflow-hidden rounded-[1.5rem] ${bgTint} p-4 flex items-center justify-center`}>
+        
         <img
           src={product.image}
           alt={product.name}
-          className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+          className="h-full w-full object-contain drop-shadow-[0_12px_16px_rgba(0,0,0,0.15)] transition duration-700 ease-out group-hover:scale-105 group-hover:rotate-1"
         />
 
-        {/* Image overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-60" />
-
-        {/* Number */}
-        <div className="absolute left-5 top-5 rounded-full border border-white/30 bg-black/20 px-3 py-1.5 text-xs font-black tracking-[0.2em] text-white backdrop-blur-md">
+        {/* Number Badge */}
+        <div className="absolute left-4 top-4 rounded-full border border-black/10 bg-white/90 px-3 py-1 text-xs font-mono font-bold tracking-widest text-[#26211E] backdrop-blur-md">
           {product.number}
         </div>
 
-        {/* 3D View Button */}
-        <div className="absolute bottom-5 right-5 grid h-12 w-12 translate-y-3 place-items-center rounded-full bg-white text-slate-950 opacity-0 shadow-xl transition duration-500 group-hover:translate-y-0 group-hover:opacity-100">
-          <ArrowUpRight size={20} />
+        {/* Category Pill */}
+        <div className="absolute right-4 top-4 rounded-full border border-black/10 bg-white/90 px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wider text-[#7D6B5A] backdrop-blur-md">
+          {product.category}
+        </div>
+
+        {/* 3D View Button Icon */}
+        <div 
+          className="absolute bottom-4 right-4 grid h-10 w-10 translate-y-2 place-items-center rounded-full text-white opacity-0 shadow-lg transition duration-500 group-hover:translate-y-0 group-hover:opacity-100"
+          style={{ backgroundColor: accentColor }}
+        >
+          <ArrowUpRight size={18} />
         </div>
 
       </div>
 
-
       {/* ================= PRODUCT INFO ================= */}
-
-      <div className="px-2 pb-2 pt-6">
-
-        <div className="flex items-start justify-between gap-4">
-
+      <div className="px-2 pb-2 pt-5">
+        
+        <div className="flex items-start justify-between gap-3">
           <div>
-
-            <p className="text-[10px] font-black uppercase tracking-[0.25em] text-[#b65f48]">
-              {product.category}
+            <p 
+              className="text-[10px] font-bold uppercase tracking-[0.25em]"
+              style={{ color: accentColor }}
+            >
+              Hand-Bound Folio
             </p>
 
-            <h3 className="mt-2 text-xl font-black text-[#292421]">
+            <h3 className="mt-1 text-lg font-bold text-[#26211E] font-serif">
               {product.name}
             </h3>
-
           </div>
 
           {product.price && (
-            <span className="pt-1 text-sm font-black text-[#b65f48]">
+            <span 
+              className="pt-1 text-sm font-extrabold"
+              style={{ color: accentColor }}
+            >
               {product.price}
             </span>
           )}
-
         </div>
 
-
-        <p className="mt-3 text-sm leading-6 text-[#6f6259]">
+        <p className="mt-2 text-xs leading-relaxed text-[#7D6B5A] line-clamp-2">
           {product.description}
         </p>
 
-
-        {/* Bottom hover line */}
-        <div className="mt-5 h-px w-0 bg-[#b65f48] transition-all duration-500 group-hover:w-full" />
+        {/* Bottom Hover Line */}
+        <div 
+          className="mt-4 h-0.5 w-0 transition-all duration-500 group-hover:w-full"
+          style={{ backgroundColor: accentColor }}
+        />
 
       </div>
 

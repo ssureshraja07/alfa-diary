@@ -1,56 +1,103 @@
 import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Search, Sparkles, BookOpen, Layers, Check, Calendar } from "lucide-react";
 import { useState } from "react";
+import useScrollReveal from "../hooks/useScrollReveal";
 
 import ProductCard from "../components/ProductCard";
 import Product3DModal from "../components/Product3DModal";
+import OpenedDiaryFooter from "../components/OpenedDiaryFooter";
 import { products } from "../data/products";
+import collectionDiariesImg from "../images/collection-diaries-hero.jpg";
 
 export default function Products() {
+  useScrollReveal();
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [filterCategory, setFilterCategory] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const categories = [
+    { id: "all", name: "All Folios" },
+    { id: "Journal", name: "Journals" },
+    { id: "Premium Diary", name: "Premium Diaries" },
+    { id: "Planner", name: "Planners" },
+    { id: "Travel", name: "Travel & Expedition" },
+    { id: "Luxury", name: "Luxury Leather" },
+  ];
+
+  const filteredProducts = products.filter((p) => {
+    const matchesCategory = filterCategory === "all" || p.category === filterCategory;
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                          p.description?.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
+  });
 
   return (
-    <main className="min-h-screen bg-[#d99078] text-[#292421]">
+    <main className="min-h-screen bg-[#F6F1E7] text-[#26211E]">
 
-      {/* ================= HEADER ================= */}
+      {/* ================= 1. PHOTO BANNER BELOW NAVBAR (LIKE QUALITY PAGE) ================= */}
+      <section className="relative pt-20">
+        
+        {/* Full-width container with border and margin for editorial aesthetic */}
+        <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-6">
+          
+          <div className="relative overflow-hidden rounded-[2.5rem] border border-[#E8DDCB] shadow-2xl">
+            
+            {/* Background Image of Diverse 2027 Diaries Collection */}
+            <div className="relative aspect-[16/9] sm:aspect-[21/9] w-full overflow-hidden bg-[#26211E]">
+              <img
+                src={collectionDiariesImg}
+                alt="Our Products 2027 Editions - Collection of Alfa Diaries in terracotta, dusty blue, beige and leather"
+                className="h-full w-full object-cover object-center transition duration-1000 ease-out hover:scale-105"
+              />
 
-      <section className="relative overflow-hidden bg-[#292421] px-6 pb-24 pt-36 text-[#f5f0e6]">
+              {/* Gentle Gradient Overlay for text contrast without obscuring the diaries */}
+              <div className="absolute inset-0 bg-gradient-to-t from-[#26211E]/85 via-[#26211E]/35 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#26211E]/40 via-transparent to-transparent" />
+            </div>
 
-        <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-[#d99078]/30 blur-3xl" />
+            {/* Hero Text Overlay directly on the image */}
+            <div className="absolute inset-0 flex flex-col justify-end p-6 sm:p-12 lg:p-16 text-white">
+              <div className="max-w-3xl space-y-4">
+                
+                <Link
+                  to="/"
+                  className="group inline-flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-[#F6F1E7]/80 transition hover:text-white"
+                >
+                  <ArrowLeft size={16} className="transition group-hover:-translate-x-1" />
+                  <span>Return to Home</span>
+                </Link>
 
-        <div className="pointer-events-none absolute -bottom-40 left-10 h-80 w-80 rounded-full bg-[#b65f48]/20 blur-3xl" />
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#F6F1E7] backdrop-blur-md">
+                  <Calendar size={14} className="text-[#E78A70]" />
+                  <span>Alfa Diaries Pvt Ltd • 2027 Editions</span>
+                </div>
 
-        <div className="relative mx-auto max-w-7xl">
+                <h1 className="text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl font-serif leading-tight text-white">
+                  Our Products — 2027 Editions
+                </h1>
 
-          <Link
-            to="/"
-            className="group inline-flex items-center gap-2 text-sm font-bold text-[#f5f0e6]/70 transition hover:text-white"
-          >
-            <ArrowLeft
-              size={17}
-              className="transition group-hover:-translate-x-1"
-            />
-            Back home
-          </Link>
+                <p className="max-w-2xl text-sm sm:text-base leading-relaxed text-white/90">
+                  Explore our complete collection of 2027 diaries, planners, and tactile notebooks crafted to satisfy every market segment and suit everyone's pocket.
+                </p>
 
-          <div className="mt-16 max-w-4xl">
+                {/* Quick Quality Specs on the Banner */}
+                <div className="flex flex-wrap items-center gap-3 pt-1 text-xs">
+                  <span className="rounded-full bg-white/20 px-3 py-1 font-semibold backdrop-blur-md">
+                    20+ Designs
+                  </span>
+                  <span className="rounded-full bg-white/20 px-3 py-1 font-semibold backdrop-blur-md">
+                    120–160 GSM
+                  </span>
+                  <span className="rounded-full bg-white/20 px-3 py-1 font-semibold backdrop-blur-md">
+                    Smyth-Sewn Lay-Flat
+                  </span>
+                  <span className="rounded-full bg-white/20 px-3 py-1 font-semibold backdrop-blur-md">
+                    Sivakasi Handcrafted
+                  </span>
+                </div>
 
-            <p className="text-xs font-black uppercase tracking-[0.4em] text-[#d99078]">
-              The complete collection
-            </p>
-
-            <h1 className="mt-5 text-6xl font-black leading-[0.95] tracking-tight sm:text-7xl lg:text-8xl">
-              FIND YOUR
-              <br />
-              <span className="text-[#d99078]">
-                NEXT CHAPTER.
-              </span>
-            </h1>
-
-            <p className="mt-8 max-w-2xl text-base leading-8 text-[#f5f0e6]/65 sm:text-lg">
-              From everyday journals to premium executive diaries,
-              find a notebook that feels like it was made for your story.
-            </p>
+              </div>
+            </div>
 
           </div>
 
@@ -58,138 +105,99 @@ export default function Products() {
 
       </section>
 
+      {/* ================= FILTER & SEARCH BAR ================= */}
+      <section className="reveal-on-scroll sticky top-20 z-40 mt-8 border-y border-[#E8DDCB] bg-[#F6F1E7]/92 px-6 py-4 backdrop-blur-md">
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          
+          {/* Category Tabs */}
+          <div className="flex flex-wrap items-center gap-2">
+            {categories.map((c) => (
+              <button
+                key={c.id}
+                onClick={() => setFilterCategory(c.id)}
+                className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all duration-200 ${
+                  filterCategory === c.id
+                    ? "bg-[#C05A3E] text-white shadow-sm"
+                    : "border border-[#E8DDCB] bg-white text-[#7D6B5A] hover:bg-[#EDE4D3]"
+                }`}
+              >
+                {c.name}
+              </button>
+            ))}
+          </div>
 
-      {/* ================= PRODUCTS ================= */}
+          {/* Search Box */}
+          <div className="relative min-w-[260px]">
+            <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7D6B5A]" />
+            <input
+              type="text"
+              placeholder="Search by name, paper or binding..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full rounded-full border border-[#E8DDCB] bg-white py-2 pl-9 pr-4 text-xs text-[#26211E] placeholder-[#7D6B5A]/60 outline-none transition focus:border-[#C05A3E] focus:ring-1 focus:ring-[#C05A3E]"
+            />
+          </div>
 
-      <section className="px-6 py-24 sm:py-32">
+        </div>
+      </section>
+
+      {/* ================= PRODUCTS GRID ================= */}
+      <section className="px-6 py-14 sm:py-20">
 
         <div className="mx-auto max-w-7xl">
 
-          <div className="mb-14 flex flex-col justify-between gap-6 sm:flex-row sm:items-end">
-
-            <div>
-
-              <p className="text-xs font-black uppercase tracking-[0.35em] text-[#8f4635]">
-                Explore
-              </p>
-
-              <h2 className="mt-3 text-4xl font-black tracking-tight sm:text-5xl">
-                Every page starts somewhere.
-              </h2>
-
+          <div className="reveal-on-scroll mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs font-semibold text-[#7D6B5A]">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-[#26211E]">Showing {filteredProducts.length} 2027 diaries in stock</span>
+              <span className="h-1 w-1 rounded-full bg-[#7D6B5A]/40" />
+              <span>Sivakasi Atelier Archive</span>
             </div>
-
-            <div className="text-sm font-medium text-[#624d44]">
-              Showing all {products.length} products
-            </div>
-
+            <span>Click any product for 3D interactive view</span>
           </div>
 
+          <div className="reveal-on-scroll reveal-delay-1 grid gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 
-         {/* ================= PRODUCT GRID ================= */}
-
-<div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
-
-  {products.map((product, index) => (
-    <div
-      key={product.id}
-      className="animate-[fadeIn_0.7s_ease-out_both]"
-      style={{
-        animationDelay: `${index * 80}ms`,
-      }}
-    >
-
-      {/* CLICK PRODUCT → 3D MODAL */}
-
-      <div
-  onClick={(e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setSelectedProduct(product);
-  }}
-  className="group cursor-pointer transition duration-500 hover:-translate-y-2"
->
-  <ProductCard product={product} />
-</div>
-    </div>
-  ))}
-
-</div>
-
-
-          {/* EXPLORE MORE */}
-
-          <div className="mt-16 text-center">
-
-            <Link
-              to="/"
-              className="group inline-flex items-center gap-3 rounded-full bg-[#292421] px-8 py-4 text-sm font-black uppercase tracking-[0.2em] text-[#f5f0e6] transition duration-300 hover:-translate-y-1 hover:bg-[#8f4635]"
-            >
-              Back to home
-
-              <span className="text-lg transition group-hover:translate-x-2">
-                →
-              </span>
-
-            </Link>
-
-          </div>
-
-        </div>
-
-      </section>
-
-
-      {/* ================= CTA ================= */}
-
-      <section className="bg-[#f5f0e6] px-6 py-28">
-
-        <div className="mx-auto max-w-5xl">
-
-          <div className="relative overflow-hidden rounded-[2.5rem] bg-[#292421] px-8 py-16 text-center text-white sm:px-16 sm:py-20">
-
-            <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-72 -translate-x-1/2 rounded-full bg-[#d99078]/20 blur-3xl" />
-
-            <div className="relative">
-
-              <p className="text-xs font-black uppercase tracking-[0.35em] text-[#d99078]">
-                Still looking?
-              </p>
-
-              <h2 className="mt-5 text-4xl font-black tracking-tight sm:text-5xl">
-                Your story needs
-                <br />
-                the right pages.
-              </h2>
-
-              <p className="mx-auto mt-6 max-w-xl text-base leading-7 text-white/60">
-                Take your time. Browse the collection and find
-                the diary that feels right for your next chapter.
-              </p>
-
-              <Link
-                to="/"
-                className="group mt-9 inline-flex items-center gap-2 rounded-full bg-[#f5f0e6] px-7 py-4 font-bold text-[#292421] transition duration-300 hover:-translate-y-1 hover:bg-[#d99078]"
+            {filteredProducts.map((product) => (
+              <div
+                key={product.id}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setSelectedProduct(product);
+                }}
+                className="cursor-pointer transition duration-300"
               >
-                Back to home
-
-                <ArrowUpRight
-                  size={18}
-                  className="transition group-hover:translate-x-1 group-hover:-translate-y-1"
-                />
-              </Link>
-
-            </div>
+                <ProductCard product={product} />
+              </div>
+            ))}
 
           </div>
+
+          {filteredProducts.length === 0 && (
+            <div className="py-20 text-center">
+              <p className="text-base font-bold text-[#7D6B5A]">
+                No journals matched your search.
+              </p>
+              <button
+                onClick={() => {
+                  setFilterCategory("all");
+                  setSearchQuery("");
+                }}
+                className="mt-4 rounded-full bg-[#C05A3E] px-5 py-2 text-xs font-bold text-white"
+              >
+                Reset Filters
+              </button>
+            </div>
+          )}
 
         </div>
 
       </section>
 
+      {/* ================= OPENED DIARY FOOTER ================= */}
+      <OpenedDiaryFooter />
 
-      {/* ================= 3D MODAL ================= */}
-
+      {/* ================= 3D PREVIEW MODAL ================= */}
       <Product3DModal
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
@@ -197,4 +205,4 @@ export default function Products() {
 
     </main>
   );
-}   
+}
