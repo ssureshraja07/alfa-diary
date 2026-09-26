@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowUpRight, Search, Sparkles, BookOpen, Layers, Check, Calendar } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
 
 import ProductCard from "../components/ProductCard";
@@ -14,6 +14,13 @@ export default function Products() {
 
   const [filterCategory, setFilterCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+  const gridRef = useRef(null);
+
+  const handleFilter = (categoryId) => {
+    setFilterCategory(categoryId);
+    // Scroll to the top of the products grid
+    gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const categories = [
     { id: "all", name: "All Folios" },
@@ -114,7 +121,7 @@ export default function Products() {
             {categories.map((c) => (
               <button
                 key={c.id}
-                onClick={() => setFilterCategory(c.id)}
+                onClick={() => handleFilter(c.id)}
                 className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all duration-200 ${
                   filterCategory === c.id
                     ? "bg-[#C05A3E] text-white shadow-sm"
@@ -142,7 +149,7 @@ export default function Products() {
       </section>
 
       {/* ================= PRODUCTS GRID ================= */}
-      <section className="px-6 py-14 sm:py-20">
+      <section ref={gridRef} className="px-6 py-14 sm:py-20 scroll-mt-28">
 
         <div className="mx-auto max-w-7xl">
 
@@ -155,12 +162,13 @@ export default function Products() {
             <span>Browse our complete collection</span>
           </div>
 
-          <div className="reveal-on-scroll reveal-delay-1 grid gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
 
-            {filteredProducts.map((product) => (
+            {filteredProducts.map((product, index) => (
               <div
                 key={product.id}
-                className="transition duration-300"
+                className="product-card-enter transition duration-300"
+                style={{ animationDelay: `${index * 0.04}s` }}
               >
                 <ProductCard product={product} />
               </div>
