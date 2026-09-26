@@ -94,42 +94,6 @@ export default function Home() {
                 <span>National & International Standards</span>
               </div>
             </div>
-
-          </div>
-
-        </div>
-
-      </section>
-
-      {/* ================= COLOR STORY BANNER ================= */}
-      <section className="border-y border-[#E8DDCB] bg-white py-8 px-6">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6">
-          <div className="flex items-center gap-3">
-            <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-[#C05A3E] text-white">
-              <Palette size={16} />
-            </span>
-            <span className="text-xs font-extrabold uppercase tracking-widest text-[#26211E]">
-              The Four 2027 Colorways:
-            </span>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-4 sm:gap-8 text-xs font-bold text-[#7D6B5A]">
-            <div className="flex items-center gap-2">
-              <span className="h-4 w-4 rounded-full bg-[#C05A3E] shadow-xs" />
-              <span>Terracotta (Gold 2027 Stamp)</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="h-4 w-4 rounded-full bg-[#587989] shadow-xs" />
-              <span>Dusty Blue (Silver 2027 Plaque)</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="h-4 w-4 rounded-full bg-[#E8DDCB] border border-black/20 shadow-xs" />
-              <span>Beige Linen (2027 Ribbon)</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <span className="h-4 w-4 rounded-full bg-white border border-slate-300 shadow-xs" />
-              <span>Pure White (2027 Embossed)</span>
-            </div>
           </div>
         </div>
       </section>

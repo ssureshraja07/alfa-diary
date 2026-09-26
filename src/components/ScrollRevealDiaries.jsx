@@ -132,8 +132,6 @@ export default function ScrollRevealDiaries() {
         {/* Section Header */}
         <div className="flex flex-col items-center text-center">
           <div className="inline-flex items-center gap-2 rounded-full border border-[#C05A3E]/20 bg-[#F9EFEA] px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#C05A3E]">
-            <Sparkles size={14} />
-            <span>Interactive Scroll Unveiling</span>
           </div>
 
           <h2 className="mt-4 text-4xl font-extrabold tracking-tight text-[#26211E] sm:text-5xl lg:text-6xl font-serif">
@@ -144,46 +142,7 @@ export default function ScrollRevealDiaries() {
             Experience our diaries gliding dynamically from the left and right margins. Witness the interplay of warm terracotta, soft beige, serene dusty blue, and crisp white.
           </p>
 
-          {/* Interactive Scroll Animation Mode Switcher */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-2 rounded-2xl border border-[#E8DDCB] bg-white p-1.5 shadow-sm">
-            <span className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#7D6B5A]">
-              <SlidersHorizontal size={14} className="text-[#C05A3E]" />
-              Reveal Mode:
-            </span>
-
-            <button
-              onClick={() => setRevealMode("left-right")}
-              className={`rounded-xl px-4 py-2 text-xs font-bold transition-all duration-300 ${
-                revealMode === "left-right"
-                  ? "bg-[#C05A3E] text-white shadow-md scale-105"
-                  : "text-[#26211E] hover:bg-[#F6F1E7]"
-              }`}
-            >
-              ⇄ Left & Right Wings
-            </button>
-
-            <button
-              onClick={() => setRevealMode("flip-open")}
-              className={`rounded-xl px-4 py-2 text-xs font-bold transition-all duration-300 ${
-                revealMode === "flip-open"
-                  ? "bg-[#587989] text-white shadow-md scale-105"
-                  : "text-[#26211E] hover:bg-[#F6F1E7]"
-              }`}
-            >
-              📖 Book 3D Flip
-            </button>
-
-            <button
-              onClick={() => setRevealMode("cascade")}
-              className={`rounded-xl px-4 py-2 text-xs font-bold transition-all duration-300 ${
-                revealMode === "cascade"
-                  ? "bg-[#26211E] text-white shadow-md scale-105"
-                  : "text-[#26211E] hover:bg-[#F6F1E7]"
-              }`}
-            >
-              ⇡ Floating Cascade
-            </button>
-          </div>
+          
         </div>
 
         {/* ================= SCROLL REVEAL TIMELINE / DIARIES ================= */}
