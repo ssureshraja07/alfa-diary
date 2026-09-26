@@ -1,36 +1,18 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import { 
   ArrowRight, 
-  Sparkles, 
-  Feather, 
-  BookOpen, 
-  Layers, 
-  ShieldCheck, 
   Palette, 
-  Eye, 
-  Compass, 
-  Calendar, 
-  CheckCircle2, 
-  Bookmark 
+  Calendar 
 } from "lucide-react";
 
-import ProductCard from "../components/ProductCard";
-import Product3DModal from "../components/Product3DModal";
 import ScrollRevealDiaries from "../components/ScrollRevealDiaries";
 import OpenedDiaryFooter from "../components/OpenedDiaryFooter";
-import { products } from "../data/products";
 import heroDiariesImg from "../images/diaries-2027-hero.jpg";
 
 export default function Home() {
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [activeCategory, setActiveCategory] = useState("all");
 
-  const homeProducts = products.slice(0, 8);
 
-  const filteredProducts = activeCategory === "all"
-    ? homeProducts
-    : homeProducts.filter((p) => p.category?.toLowerCase().includes(activeCategory.toLowerCase()));
+
 
   return (
     <main className="min-h-screen bg-[#F6F1E7] text-[#26211E]">
@@ -153,7 +135,7 @@ export default function Home() {
       </section>
 
       {/* ================= SCROLL REVEAL DIARIES (LEFT & RIGHT) ================= */}
-      <ScrollRevealDiaries onSelectProduct={setSelectedProduct} />
+      <ScrollRevealDiaries />
 
       
 
@@ -230,11 +212,7 @@ export default function Home() {
       {/* ================= OPENED DIARY FOOTER ================= */}
       <OpenedDiaryFooter />
 
-      {/* ================= 3D PREVIEW MODAL ================= */}
-      <Product3DModal
-        product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-      />
+
 
     </main>
   );

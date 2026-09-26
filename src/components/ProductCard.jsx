@@ -1,4 +1,4 @@
-import { ArrowUpRight, Box } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 
 export default function ProductCard({ product }) {
   // Determine accent color based on number/id
@@ -28,7 +28,7 @@ export default function ProductCard({ product }) {
           {product.category}
         </div>
 
-        {/* 3D View Button Icon */}
+        {/* Hover Action Icon */}
         <div 
           className="absolute bottom-4 right-4 grid h-10 w-10 translate-y-2 place-items-center rounded-full text-white opacity-0 shadow-lg transition duration-500 group-hover:translate-y-0 group-hover:opacity-100"
           style={{ backgroundColor: accentColor }}

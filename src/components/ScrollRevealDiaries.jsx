@@ -4,16 +4,16 @@ import {
   Sparkles, 
   Layers, 
   ArrowRight, 
-  Box, 
+  
   Compass, 
   Bookmark, 
   ShieldCheck, 
-  Eye, 
+  
   SlidersHorizontal 
 } from "lucide-react";
 import { products } from "../data/products";
 
-export default function ScrollRevealDiaries({ onSelectProduct }) {
+export default function ScrollRevealDiaries() {
   // Reveal modes the user can toggle between
   const [revealMode, setRevealMode] = useState("left-right"); // 'left-right' | 'flip-open' | 'cascade'
 
@@ -245,14 +245,14 @@ export default function ScrollRevealDiaries({ onSelectProduct }) {
                         }`}
                       />
 
-                      {/* Interactive 3D inspect overlay button */}
-                      <button
-                        onClick={() => onSelectProduct?.(item)}
+                      {/* View Details Button — navigates to products page */}
+                      <Link
+                        to="/products"
                         className="absolute bottom-5 right-5 flex items-center gap-2 rounded-full bg-[#26211E] px-4 py-2 text-xs font-bold text-white shadow-xl transition-all duration-300 hover:bg-[#C05A3E] hover:scale-105"
                       >
-                        <Box size={14} />
-                        <span>Interactive 3D View</span>
-                      </button>
+                        <ArrowRight size={14} />
+                        <span>View Details</span>
+                      </Link>
                     </div>
 
                     {/* Palette Swatches Bar */}
@@ -327,13 +327,13 @@ export default function ScrollRevealDiaries({ onSelectProduct }) {
 
                     {/* Actions */}
                     <div className="flex items-center gap-4 pt-4">
-                      <button
-                        onClick={() => onSelectProduct?.(item)}
+                      <Link
+                        to="/products"
                         className="inline-flex items-center gap-2 rounded-full bg-[#C05A3E] px-6 py-3 text-xs font-bold uppercase tracking-wider text-white shadow-md transition duration-300 hover:bg-[#8F3720] hover:shadow-lg"
                       >
-                        <Eye size={14} />
-                        <span>Inspect Details</span>
-                      </button>
+                        <ArrowRight size={14} />
+                        <span>View Product</span>
+                      </Link>
 
                       <Link
                         to="/products"

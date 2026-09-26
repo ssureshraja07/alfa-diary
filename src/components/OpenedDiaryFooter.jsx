@@ -258,50 +258,7 @@ export default function OpenedDiaryFooter() {
                       </div>
                     </div>
 
-                    {/* Quick Inscribe Form */}
-                    <form onSubmit={handleSubmit} className="mt-4 space-y-2">
-                      <div className="grid grid-cols-2 gap-2">
-                        <input
-                          type="text"
-                          placeholder="Your Name"
-                          required
-                          value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                          className="w-full rounded-lg border border-[#E8DDCB] bg-white px-3 py-1.5 text-xs text-[#26211E] placeholder-[#7D6B5A]/60 outline-none focus:border-[#C05A3E]"
-                        />
-                        <input
-                          type="email"
-                          placeholder="Your Email"
-                          required
-                          value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          className="w-full rounded-lg border border-[#E8DDCB] bg-white px-3 py-1.5 text-xs text-[#26211E] placeholder-[#7D6B5A]/60 outline-none focus:border-[#C05A3E]"
-                        />
-                      </div>
-                      <textarea
-                        rows={1}
-                        placeholder="Inscribe a quick message..."
-                        value={formData.message}
-                        onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                        className="w-full resize-none rounded-lg border border-[#E8DDCB] bg-white px-3 py-1.5 text-xs text-[#26211E] placeholder-[#7D6B5A]/60 outline-none focus:border-[#C05A3E]"
-                      />
-                      <button
-                        type="submit"
-                        className="group flex w-full items-center justify-center gap-2 rounded-lg bg-[#C05A3E] py-2 text-xs font-bold uppercase tracking-wider text-white shadow-xs transition hover:bg-[#8F3720]"
-                      >
-                        {submitted ? (
-                          <>
-                            <CheckCircle2 size={14} />
-                            <span>Inscribed! We will connect soon</span>
-                          </>
-                        ) : (
-                          <>
-                            <span>Send Note to Sivakasi Desk</span>
-                            <Send size={12} className="transition group-hover:translate-x-1" />
-                          </>
-                        )}
-                      </button>
-                    </form>
+                   
                   </div>
 
                   {/* Right Page Footer */}

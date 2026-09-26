@@ -4,14 +4,14 @@ import { useState } from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
 
 import ProductCard from "../components/ProductCard";
-import Product3DModal from "../components/Product3DModal";
+
 import OpenedDiaryFooter from "../components/OpenedDiaryFooter";
 import { products } from "../data/products";
 import collectionDiariesImg from "../images/collection-diaries-hero.jpg";
 
 export default function Products() {
   useScrollReveal();
-  const [selectedProduct, setSelectedProduct] = useState(null);
+
   const [filterCategory, setFilterCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -152,7 +152,7 @@ export default function Products() {
               <span className="h-1 w-1 rounded-full bg-[#7D6B5A]/40" />
               <span>Sivakasi Atelier Archive</span>
             </div>
-            <span>Click any product for 3D interactive view</span>
+            <span>Browse our complete collection</span>
           </div>
 
           <div className="reveal-on-scroll reveal-delay-1 grid gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
@@ -160,12 +160,7 @@ export default function Products() {
             {filteredProducts.map((product) => (
               <div
                 key={product.id}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  setSelectedProduct(product);
-                }}
-                className="cursor-pointer transition duration-300"
+                className="transition duration-300"
               >
                 <ProductCard product={product} />
               </div>
@@ -197,11 +192,7 @@ export default function Products() {
       {/* ================= OPENED DIARY FOOTER ================= */}
       <OpenedDiaryFooter />
 
-      {/* ================= 3D PREVIEW MODAL ================= */}
-      <Product3DModal
-        product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-      />
+
 
     </main>
   );
