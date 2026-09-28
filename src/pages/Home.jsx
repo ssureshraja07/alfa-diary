@@ -57,8 +57,7 @@ export default function Home() {
 
             {/* Description */}
             <p className="max-w-xl text-base leading-relaxed text-[#7D6B5A] sm:text-lg">
-              Crafted for 2027 in our Sivakasi atelier. Choose from rich terracotta leather, tranquil dusty blue linen, raw beige cloth, and chalk white vellum—all hand-bound with archival lay-flat stitching.
-            </p>
+        Alfa Diaries Pvt Ltd has been the only choice for those who understand that stationery is not just a necessity, but a companion, an object of joy and a personality statement.            </p>
 
             {/* Action Buttons */}
             <div className="flex flex-wrap items-center gap-4 pt-2">
