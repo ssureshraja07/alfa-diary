@@ -18,15 +18,14 @@ export default function OpenedDiaryFooter() {
   const [submitted, setSubmitted] = useState(false);
 
   const phoneNumbers = [
-    { label: "+91 73975 70456", href: "tel:+917397570456" },
-    { label: "+91 94433 74456", href: "tel:+919443374456" },
     { label: "+91 94875 24457", href: "tel:+919487524457" },
+    { label: "+91 94433 74456", href: "tel:+919443374456" },
   ];
 
   const emailAddresses = [
     { label: "Ashwin.alfadiaries@gmail.com", href: "mailto:Ashwin.alfadiaries@gmail.com" },
-    { label: "Ashwin@alfadiaries.in", href: "mailto:Ashwin@alfadiaries.in" },
-    { label: "Alfadiaries@gmail.com", href: "mailto:Alfadiaries@gmail.com" },
+    { label: "ashwin@alfadiaries.in", href: "mailto:ashwin@alfadiaries.in" },
+    { label: "alfadiaries@gmail.com", href: "mailto:slfadiaries@gmail.com" },
   ];
 
   const handleSubmit = (e) => {
