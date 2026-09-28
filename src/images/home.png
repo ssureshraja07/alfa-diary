@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TruckMate - Commercial Rig Network</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        ig: {
+                            orange: '#f09433',
+                            red: '#e6683c',
+                            pink: '#dc2743',
+                            purple: '#cc2366',
+                            violet: '#bc1888'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+                        script: ['Grand Hotel', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- Google Fonts & FontAwesome -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Exact Instagram Story & Button Gradients */
+        .ig-story-border {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            padding: 2.5px;
+        }
+        .ig-gradient-btn {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+        /* Gradient UI Cards for Search Categories */
+        .ig-gradient-card-owner {
+            background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+        }
+        .ig-gradient-card-driver {
+            background: linear-gradient(135deg, #00c6ff 0%, #0072ff 100%);
+        }
+        .ig-gradient-card-mechanic {
+            background: linear-gradient(135deg, #f857a6 0%, #ff5858 100%);
+        }
+        .ig-gradient-card-sell {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        @keyframes storyProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+        .animate-story-progress {
+            animation: storyProgress 5s linear forwards;
+        }
+    </style>
+</head>
+<body class="bg-white text-black dark:bg-black dark:text-white min-h-screen antialiased selection:bg-pink-500 selection:text-white pb-16">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-3 left-1/2 -translate-x-1/2 z-50 flex flex-col gap-2 w-11/12 max-w-sm pointer-events-none"></div>
+
+    <!-- MAIN APP WRAPPER (Edge-to-Edge Container) -->
+    <div class="max-w-md mx-auto min-h-screen flex flex-col bg-white dark:bg-black border-x border-gray-100 dark:border-neutral-900 relative">
+
+        <!-- ============================================================== -->
+        <!-- SCREEN 1: HOME FEED TAB -->
+        <!-- ============================================================== -->
+        <div id="home-screen" class="tab-screen">
+            <!-- TOP NAVIGATION HEADER (Matching IG Screenshot) -->
+            <header class="sticky top-0 z-30 bg-white/95 dark:bg-black/95 backdrop-blur-md px-4 py-2.5 flex items-center justify-between border-b border-gray-100 dark:border-neutral-900">
+                <button onclick="openCreatePostModal()" class="text-2xl text-black dark:text-white hover:opacity-70 transition">
+                    <i class="fa-regular fa-square-plus"></i>
+                </button>
+
+                <div class="flex items-center gap-1 cursor-pointer" onclick="filterPosts('all')">
+                    <span class="font-script text-3xl font-bold tracking-tight text-black dark:text-white select-none">TruckMate</span>
+                    <i class="fa-solid fa-chevron-down text-xs text-black dark:text-white mt-1"></i>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <button onclick="showToast('No new notifications')" class="text-xl text-black dark:text-white hover:opacity-70 transition">
+                        <i class="fa-regular fa-heart"></i>
+                    </button>
+                    <button onclick="openChatModal()" class="text-xl text-black dark:text-white relative hover:opacity-70 transition">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span id="header-unread-dot" class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-white dark:border-black"></span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- STORIES ROW (Strictly Round Avatars, NO Box Cards) -->
+            <section class="py-3 px-2 border-b border-gray-100 dark:border-neutral-900 overflow-x-auto no-scrollbar">
+                <div id="stories-container" class="flex items-center gap-3">
+                    <!-- Dynamic story injection -->
+                </div>
+            </section>
+
+            <!-- CATEGORY FILTERS BAR (Minimal IG Pill Tags) -->
+            <div class="flex items-center gap-2 px-3 py-2 overflow-x-auto no-scrollbar border-b border-gray-100 dark:border-neutral-900 text-xs">
+                <button onclick="filterPosts('all')" class="filter-btn active-filter px-3.5 py-1 rounded-full font-semibold whitespace-nowrap bg-black text-white dark:bg-white dark:text-black transition">All Rigs</button>
+                <button onclick="filterPosts('Heavy Haul')" class="filter-btn px-3.5 py-1 rounded-full font-medium whitespace-nowrap bg-gray-100 dark:bg-neutral-900 text-gray-800 dark:text-gray-200 hover:bg-gray-200 transition">Heavy Haul</button>
+                <button onclick="filterPosts('Custom Builds')" class="filter-btn px-3.5 py-1 rounded-full font-medium whitespace-nowrap bg-gray-100 dark:bg-neutral-900 text-gray-800 dark:text-gray-200 hover:bg-gray-200 transition">Custom Builds</button>
+                <button onclick="filterPosts('Flatbed')" class="filter-btn px-3.5 py-1 rounded-full font-medium whitespace-nowrap bg-gray-100 dark:bg-neutral-900 text-gray-800 dark:text-gray-200 hover:bg-gray-200 transition">Flatbeds</button>
+                <button onclick="filterPosts('Dump Truck')" class="filter-btn px-3.5 py-1 rounded-full font-medium whitespace-nowrap bg-gray-100 dark:bg-neutral-900 text-gray-800 dark:text-gray-200 hover:bg-gray-200 transition">Dump Trucks</button>
+            </div>
+
+            <!-- MAIN POSTS FEED -->
+            <main id="posts-feed" class="flex-1 divide-y divide-gray-100 dark:divide-neutral-900">
+                <!-- Dynamic Post Cards -->
+            </main>
+        </div>
+
+
+        <!-- ============================================================== -->
+        <!-- SCREEN 2: SEARCH / DISCOVER SCREEN (Clean 4 Filter UI Cards) -->
+        <!-- ============================================================== -->
+        <div id="search-screen" class="tab-screen hidden min-h-[85vh] flex flex-col justify-between">
+            <!-- HEADER TITLE -->
+            <div class="sticky top-0 z-30 bg-white/95 dark:bg-black/95 backdrop-blur-md px-4 py-3 border-b border-gray-100 dark:border-neutral-900 flex items-center justify-between">
+                <div>
+                    <h2 class="text-lg font-bold text-black dark:text-white tracking-tight">Services & Directory</h2>
+                    <p class="text-[11px] text-gray-500 font-normal">Select a category to connect with TruckMate partners</p>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-neutral-900 flex items-center justify-center text-xs text-gray-500">
+                    <i class="fa-solid fa-sliders"></i>
+                </div>
+            </div>
+
+            <!-- 4 UI CATEGORY CARDS CONTAINER (NO Search bar, NO profile grid) -->
+            <main class="p-4 flex-1 flex flex-col justify-center gap-4">
+                
+                <!-- 1. VEHICLE OWNER CARD -->
+                <button onclick="onCategoryCardClick('Vehicle Owner')" class="w-full relative overflow-hidden rounded-3xl p-5 text-left text-white ig-gradient-card-owner shadow-md hover:shadow-xl transition-all duration-300 transform active:scale-98 group flex items-center justify-between">
+                    <div class="space-y-1.5 z-10 max-w-[70%]">
+                        <span class="inline-block bg-black/30 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide uppercase text-white/90">
+                            <i class="fa-solid fa-circle text-[8px] text-green-400 mr-1"></i> Fleet Directory
+                        </span>
+                        <h3 class="font-extrabold text-xl tracking-tight leading-tight">Vehicle Owner</h3>
+                        <p class="text-xs text-white/80 font-medium">Browse fleets, heavy rigs & trailer operators ready for load booking.</p>
+                        <div class="pt-2 flex items-center gap-1.5 text-[11px] font-semibold text-white/90">
+                            <span>Explore Fleet Owners</span>
+                            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition duration-200"></i>
+                        </div>
+                    </div>
+
+                    <!-- Glowing Glass Icon Bubble -->
+                    <div class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-3xl shadow-inner shrink-0 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-truck-front"></i>
+                    </div>
+                </button>
+
+                <!-- 2. DRIVER CARD -->
+                <button onclick="onCategoryCardClick('Driver')" class="w-full relative overflow-hidden rounded-3xl p-5 text-left text-white ig-gradient-card-driver shadow-md hover:shadow-xl transition-all duration-300 transform active:scale-98 group flex items-center justify-between">
+                    <div class="space-y-1.5 z-10 max-w-[70%]">
+                        <span class="inline-block bg-black/30 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide uppercase text-white/90">
+                            <i class="fa-solid fa-shield-halved text-xs mr-1 text-cyan-300"></i> Verified Drivers
+                        </span>
+                        <h3 class="font-extrabold text-xl tracking-tight leading-tight">Driver</h3>
+                        <p class="text-xs text-white/80 font-medium">Find licensed heavy vehicle drivers, container haulers & job seekers.</p>
+                        <div class="pt-2 flex items-center gap-1.5 text-[11px] font-semibold text-white/90">
+                            <span>Find Available Drivers</span>
+                            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition duration-200"></i>
+                        </div>
+                    </div>
+
+                    <!-- Glowing Glass Icon Bubble -->
+                    <div class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-3xl shadow-inner shrink-0 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-id-card"></i>
+                    </div>
+                </button>
+
+                <!-- 3. MECHANIC CARD -->
+                <button onclick="onCategoryCardClick('Mechanic')" class="w-full relative overflow-hidden rounded-3xl p-5 text-left text-white ig-gradient-card-mechanic shadow-md hover:shadow-xl transition-all duration-300 transform active:scale-98 group flex items-center justify-between">
+                    <div class="space-y-1.5 z-10 max-w-[70%]">
+                        <span class="inline-block bg-black/30 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide uppercase text-white/90">
+                            <i class="fa-solid fa-wrench text-xs mr-1 text-yellow-300"></i> 24/7 Roadside
+                        </span>
+                        <h3 class="font-extrabold text-xl tracking-tight leading-tight">Mechanic</h3>
+                        <p class="text-xs text-white/80 font-medium">Emergency highway breakdown support, hydraulic & diesel workshops.</p>
+                        <div class="pt-2 flex items-center gap-1.5 text-[11px] font-semibold text-white/90">
+                            <span>Locate Nearby Mechanics</span>
+                            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition duration-200"></i>
+                        </div>
+                    </div>
+
+                    <!-- Glowing Glass Icon Bubble -->
+                    <div class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-3xl shadow-inner shrink-0 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                    </div>
+                </button>
+
+                <!-- 4. SELL VEHICLE CARD -->
+                <button onclick="onCategoryCardClick('Sell Vehicle')" class="w-full relative overflow-hidden rounded-3xl p-5 text-left text-white ig-gradient-card-sell shadow-md hover:shadow-xl transition-all duration-300 transform active:scale-98 group flex items-center justify-between">
+                    <div class="space-y-1.5 z-10 max-w-[70%]">
+                        <span class="inline-block bg-black/30 backdrop-blur-md px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide uppercase text-white/90">
+                            <i class="fa-solid fa-tags text-xs mr-1 text-emerald-200"></i> Rig Marketplace
+                        </span>
+                        <h3 class="font-extrabold text-xl tracking-tight leading-tight">Sell Vehicle</h3>
+                        <p class="text-xs text-white/80 font-medium">Buy, sell or lease commercial trucks, dumpers, tippers & trailers.</p>
+                        <div class="pt-2 flex items-center gap-1.5 text-[11px] font-semibold text-white/90">
+                            <span>View Marketplace Listings</span>
+                            <i class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition duration-200"></i>
+                        </div>
+                    </div>
+
+                    <!-- Glowing Glass Icon Bubble -->
+                    <div class="w-16 h-16 rounded-2xl bg-white/20 backdrop-blur-md border border-white/30 flex items-center justify-center text-3xl shadow-inner shrink-0 group-hover:scale-110 transition duration-300">
+                        <i class="fa-solid fa-truck-moving"></i>
+                    </div>
+                </button>
+
+            </main>
+
+            <!-- Bottom Badge Banner -->
+            <div class="p-4 text-center">
+                <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-gray-100 dark:bg-neutral-900 border border-gray-200 dark:border-neutral-800 text-[11px] text-gray-500 font-medium">
+                    <i class="fa-solid fa-shield-heart text-pink-500"></i> TruckMate Verified Commercial Network
+                </div>
+            </div>
+        </div>
+
+
+        <!-- FIXED BOTTOM NAVIGATION BAR (Exact IG Screenshot Layout) -->
+        <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white/95 dark:bg-black/95 backdrop-blur-md border-t border-gray-100 dark:border-neutral-900 px-6 py-2.5 flex items-center justify-between z-40">
+            <!-- Home Tab Button -->
+            <button id="nav-btn-home" onclick="switchTab('home')" class="text-xl text-black dark:text-white hover:opacity-70 transition">
+                <i class="fa-solid fa-house"></i>
+            </button>
+
+            <!-- Reels Icon -->
+            <button onclick="showToast('Reels / Fleet Video Feed coming soon')" class="text-xl text-gray-400 dark:text-neutral-500 hover:text-black dark:hover:text-white transition">
+                <i class="fa-regular fa-circle-play"></i>
+            </button>
+
+            <!-- Messages Icon -->
+            <button onclick="openChatModal()" class="text-xl text-gray-400 dark:text-neutral-500 relative hover:text-black dark:hover:text-white transition">
+                <i class="fa-solid fa-paper-plane"></i>
+                <span class="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">2</span>
+            </button>
+
+            <!-- Search Screen Tab Button -->
+            <button id="nav-btn-search" onclick="switchTab('search')" class="text-xl text-gray-400 dark:text-neutral-500 hover:text-black dark:hover:text-white transition">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+
+            <!-- Profile / Theme Button -->
+            <button onclick="toggleTheme()" class="w-7 h-7 rounded-full overflow-hidden border border-gray-300 dark:border-neutral-700">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=100" class="w-full h-full object-cover">
+            </button>
+        </nav>
+
+    </div>
+
+
+    <!-- ================= MODALS & BOTTOM SHEETS ================= -->
+
+    <!-- 1. 3-DOTS OPTIONS SHEET ("Not Interested", etc.) -->
+    <div id="options-sheet" class="fixed inset-0 z-50 bg-black/60 hidden backdrop-blur-xs flex items-end sm:items-center justify-center">
+        <div class="bg-white dark:bg-neutral-900 w-full max-w-md rounded-t-3xl sm:rounded-2xl p-4 shadow-2xl border-t sm:border border-gray-200 dark:border-neutral-800 space-y-2 animate-in slide-in-from-bottom duration-200">
+            <div class="w-10 h-1 bg-gray-300 dark:bg-neutral-700 rounded-full mx-auto mb-2"></div>
+            
+            <button onclick="handleNotInterested()" class="w-full text-left px-4 py-3 text-red-600 font-semibold text-sm flex items-center gap-3 rounded-xl hover:bg-gray-100 dark:hover:bg-neutral-800">
+                <i class="fa-regular fa-eye-slash text-base"></i> Not Interested
+            </button>
+            <button onclick="copyPostLinkFromSheet()" class="w-full text-left px-4 py-3 text-gray-900 dark:text-white font-medium text-sm flex items-center gap-3 rounded-xl hover:bg-gray-100 dark:hover:bg-neutral-800">
+                <i class="fa-solid fa-link text-base"></i> Copy Link
+            </button>
+            <button onclick="showToast('Carrier details verified ✔')" class="w-full text-left px-4 py-3 text-gray-900 dark:text-white font-medium text-sm flex items-center gap-3 rounded-xl hover:bg-gray-100 dark:hover:bg-neutral-800">
+                <i class="fa-regular fa-id-card text-base"></i> About This Account
+            </button>
+            <button onclick="showToast('Post reported to TruckMate Admin')" class="w-full text-left px-4 py-3 text-red-500 font-medium text-sm flex items-center gap-3 rounded-xl hover:bg-gray-100 dark:hover:bg-neutral-800">
+                <i class="fa-regular fa-flag text-base"></i> Report Post
+            </button>
+            <button onclick="closeOptionsSheet()" class="w-full text-center py-3 text-gray-500 font-bold text-sm mt-2 border-t border-gray-100 dark:border-neutral-800">
+                Cancel
+            </button>
+        </div>
+    </div>
+
+
+    <!-- 2. STORY VIEWER MODAL -->
+    <div id="story-modal" class="fixed inset-0 z-50 bg-black hidden flex items-center justify-center p-0">
+        <div class="relative w-full max-w-md h-full bg-neutral-950 flex flex-col justify-between overflow-hidden">
+            <div class="absolute top-3 left-3 right-3 z-20 flex gap-1">
+                <div class="h-1 flex-1 bg-white/30 rounded-full overflow-hidden">
+                    <div id="story-progress-bar" class="h-full bg-white w-0"></div>
+                </div>
+            </div>
+
+            <div class="absolute top-6 left-4 right-4 z-20 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <img id="story-user-img" src="" class="w-8 h-8 rounded-full object-cover border border-white">
+                    <div>
+                        <h4 id="story-username" class="text-white text-xs font-bold flex items-center gap-1"></h4>
+                        <span id="story-time" class="text-gray-300 text-[10px]"></span>
+                    </div>
+                </div>
+                <button onclick="closeStoryModal()" class="text-white text-xl p-2"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="w-full h-full relative cursor-pointer" onclick="nextStory()">
+                <img id="story-media" src="" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none"></div>
+                
+                <div class="absolute bottom-16 left-4 right-4 text-white">
+                    <span id="story-tag" class="px-2.5 py-0.5 bg-black/60 rounded-full text-[10px] font-semibold text-amber-400 mb-2 inline-block border border-amber-400/30"></span>
+                    <p id="story-caption" class="text-xs font-medium"></p>
+                </div>
+            </div>
+
+            <div class="absolute bottom-3 left-3 right-3 z-20 flex items-center gap-2">
+                <input id="story-reply-input" type="text" placeholder="Send reply to driver..." class="flex-1 bg-white/20 text-white placeholder-gray-300 text-xs px-4 py-2.5 rounded-full backdrop-blur-md border border-white/20 focus:outline-none">
+                <button onclick="sendStoryReply()" class="w-9 h-9 rounded-full ig-gradient-btn text-white flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 3. SEND REQUEST MODAL -->
+    <div id="request-modal" class="fixed inset-0 z-50 bg-black/60 hidden backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-neutral-900 w-full max-w-sm rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-neutral-800">
+            <div class="px-5 py-3 border-b border-gray-100 dark:border-neutral-800 flex items-center justify-between ig-gradient-btn text-white">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-truck-ramp-box"></i>
+                    <h3 class="font-bold text-xs uppercase tracking-wide">Send Vehicle Request</h3>
+                </div>
+                <button onclick="closeRequestModal()" class="text-white text-base"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form onsubmit="handleRequestSubmit(event)" class="p-4 space-y-3 text-xs">
+                <div class="p-2.5 bg-gray-50 dark:bg-neutral-800 rounded-xl flex items-center gap-3">
+                    <img id="req-truck-img" src="" class="w-12 h-10 object-cover rounded-lg">
+                    <div class="overflow-hidden">
+                        <h4 id="req-truck-title" class="font-bold truncate text-gray-900 dark:text-white"></h4>
+                        <p id="req-truck-driver" class="text-[10px] text-gray-500 truncate"></p>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Request Purpose</label>
+                    <select id="req-type" required class="w-full p-2.5 rounded-xl border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-800">
+                        <option value="Freight Booking">Freight Load Booking</option>
+                        <option value="Vehicle Hire">Vehicle Hire / Time Lease</option>
+                        <option value="Rate Inquiry">Rate Quote Request</option>
+                        <option value="Purchase Inquiry">Purchase Inquiry</option>
+                    </select>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Pickup</label>
+                        <input type="text" id="req-origin" required placeholder="e.g. Chennai" class="w-full p-2.5 rounded-xl border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-800">
+                    </div>
+                    <div>
+                        <label class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Drop Off</label>
+                        <input type="text" id="req-destination" required placeholder="e.g. Mumbai" class="w-full p-2.5 rounded-xl border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-800">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Target Date</label>
+                    <input type="date" id="req-date" required class="w-full p-2.5 rounded-xl border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-800">
+                </div>
+
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeRequestModal()" class="px-4 py-2 rounded-xl text-gray-500 font-semibold">Cancel</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl text-white ig-gradient-btn font-bold">Submit Request</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- 4. DIRECT MESSAGES MODAL -->
+    <div id="chat-modal" class="fixed inset-0 z-50 bg-black/60 hidden backdrop-blur-xs flex items-center justify-center p-2 sm:p-4">
+        <div class="bg-white dark:bg-neutral-900 w-full max-w-md h-[80vh] rounded-3xl shadow-2xl overflow-hidden border border-gray-200 dark:border-neutral-800 flex flex-col">
+            <div class="p-3.5 border-b border-gray-100 dark:border-neutral-800 flex items-center justify-between">
+                <div class="flex items-center gap-2.5">
+                    <img id="chat-active-img" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100" class="w-8 h-8 rounded-full object-cover">
+                    <div>
+                        <h4 id="chat-active-name" class="font-bold text-xs text-gray-900 dark:text-white">Chrome Kings</h4>
+                        <span class="text-[10px] text-green-500">● Active Dispatch</span>
+                    </div>
+                </div>
+                <button onclick="closeChatModal()" class="text-gray-400 hover:text-black dark:hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+
+            <div id="chat-messages-container" class="flex-1 p-3 overflow-y-auto space-y-2 bg-gray-50/50 dark:bg-black/30">
+                <!-- Chat Messages -->
+            </div>
+
+            <form onsubmit="handleSendMessage(event)" class="p-2.5 border-t border-gray-100 dark:border-neutral-800 flex items-center gap-2">
+                <input id="chat-input" type="text" placeholder="Write message..." required class="flex-1 bg-gray-100 dark:bg-neutral-800 text-xs px-4 py-2.5 rounded-full focus:outline-none">
+                <button type="submit" class="w-8 h-8 rounded-full ig-gradient-btn text-white flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- 5. SHARE MODAL -->
+    <div id="share-modal" class="fixed inset-0 z-50 bg-black/60 hidden backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-neutral-900 w-full max-w-xs rounded-3xl p-5 shadow-2xl border border-gray-200 dark:border-neutral-800 space-y-3">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-xs uppercase tracking-wider text-gray-500">Share Vehicle</h3>
+                <button onclick="closeShareModal()" class="text-gray-400"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div class="grid grid-cols-3 gap-3 text-center py-2">
+                <button onclick="copyShareLink()" class="flex flex-col items-center gap-1">
+                    <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center"><i class="fa-solid fa-link"></i></div>
+                    <span class="text-[10px] font-medium">Copy</span>
+                </button>
+                <button onclick="shareViaApp('WhatsApp')" class="flex flex-col items-center gap-1">
+                    <div class="w-10 h-10 rounded-full bg-green-100 text-green-600 flex items-center justify-center"><i class="fa-brands fa-whatsapp"></i></div>
+                    <span class="text-[10px] font-medium">WhatsApp</span>
+                </button>
+                <button onclick="shareViaApp('Dispatch Direct')" class="flex flex-col items-center gap-1">
+                    <div class="w-10 h-10 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center"><i class="fa-solid fa-truck-fast"></i></div>
+                    <span class="text-[10px] font-medium">Dispatch</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- 6. CREATE POST MODAL -->
+    <div id="create-modal" class="fixed inset-0 z-50 bg-black/60 hidden backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-neutral-900 w-full max-w-sm rounded-3xl shadow-2xl p-5 border border-gray-200 dark:border-neutral-800 space-y-3">
+            <div class="flex justify-between items-center border-b border-gray-100 dark:border-neutral-800 pb-2">
+                <h3 class="font-bold text-xs uppercase tracking-wide">Post Commercial Vehicle</h3>
+                <button onclick="closeCreatePostModal()" class="text-gray-400"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <form onsubmit="handleCreatePostSubmit(event)" class="space-y-3 text-xs">
+                <div>
+                    <label class="block font-semibold mb-1">Truck Model / Title</label>
+                    <input type="text" id="new-truck-title" required placeholder="e.g. 2025 Peterbilt 389 Rig" class="w-full p-2.5 rounded-xl border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-800">
+                </div>
+
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block font-semibold mb-1">Category</label>
+                        <select id="new-truck-category" class="w-full p-2.5 rounded-xl border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-800">
+                            <option value="Heavy Haul">Heavy Haul</option>
+                            <option value="Custom Builds">Custom Builds</option>
+                            <option value="Flatbed">Flatbed</option>
+                            <option value="Dump Truck">Dump Truck</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block font-semibold mb-1">Location</label>
+                        <input type="text" id="new-truck-location" required placeholder="e.g. Chennai, TN" class="w-full p-2.5 rounded-xl border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-800">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-semibold mb-1">About Vehicle (Max 50 Chars)</label>
+                    <input type="text" id="new-truck-caption" maxlength="50" required placeholder="e.g. 48 Ton Heavy Cummins X15 Diesel Rig" class="w-full p-2.5 rounded-xl border border-gray-200 dark:border-neutral-700 bg-white dark:bg-neutral-800">
+                    <span class="text-[10px] text-gray-400">Strictly 50 characters max.</span>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeCreatePostModal()" class="px-4 py-2 rounded-xl text-gray-500 font-semibold">Cancel</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl text-white ig-gradient-btn font-bold">Publish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // Stories Data
+        const storiesData = [
+            {
+                isUser: true,
+                username: "Your story",
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150",
+                media: "",
+                caption: "",
+                time: ""
+            },
+            {
+                id: 1,
+                username: "appu_28_02",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150",
+                media: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=800",
+                caption: "On route through Western Ghats highway with 40T load.",
+                tag: "Highway Haul",
+                time: "10m ago"
+            },
+            {
+                id: 2,
+                username: "mr_alan_kid_",
+                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150",
+                media: "https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80&w=800",
+                caption: "Peterbilt custom chrome polish finished today!",
+                tag: "Chrome Rig",
+                time: "35m ago"
+            },
+            {
+                id: 3,
+                username: "chokkap02",
+                avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=150",
+                media: "https://images.unsplash.com/photo-1586191582152-320d3674bfa6?auto=format&fit=crop&q=80&w=800",
+                caption: "Loaded container ready for morning dispatch.",
+                tag: "Dispatch",
+                time: "1h ago"
+            },
+            {
+                id: 4,
+                username: "titan_trans",
+                avatar: "https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&q=80&w=150",
+                media: "https://images.unsplash.com/photo-1592838064575-70ed626d3a0e?auto=format&fit=crop&q=80&w=800",
+                caption: "Heavy duty Volvo FH16 flatbed ready.",
+                tag: "Heavy Fleet",
+                time: "3h ago"
+            }
+        ];
+
+        // Home Posts Data (STRICTLY NO LIKES, NO COMMENTS, 50-CHAR CAPTION MAX)
+        let postsData = [
+            {
+                id: 201,
+                username: "__afzar__",
+                verified: true,
+                location: "No Location ✔",
+                avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=150",
+                category: "Heavy Haul",
+                timeAgo: "2 hours ago",
+                images: [
+                    "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=1000",
+                    "https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80&w=1000"
+                ],
+                currentImgIndex: 0,
+                description: "2024 Kenworth 48T Heavy Hauler with Cummins engine",
+                saved: false
+            },
+            {
+                id: 202,
+                username: "mr_alan_kid_",
+                verified: false,
+                location: "Chennai, Tamil Nadu",
+                avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&q=80&w=150",
+                category: "Custom Builds",
+                timeAgo: "5 hours ago",
+                images: [
+                    "https://images.unsplash.com/photo-1519003722824-194d4455a60c?auto=format&fit=crop&q=80&w=1000"
+                ],
+                currentImgIndex: 0,
+                description: "Peterbilt 389 Extended Hood Chrome Edition Rig",
+                saved: true
+            },
+            {
+                id: 203,
+                username: "chokkap02",
+                verified: true,
+                location: "Bengaluru Transit Hub",
+                avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=150",
+                category: "Flatbed",
+                timeAgo: "8 hours ago",
+                images: [
+                    "https://images.unsplash.com/photo-1592838064575-70ed626d3a0e?auto=format&fit=crop&q=80&w=1000"
+                ],
+                currentImgIndex: 0,
+                description: "Volvo FH16 750HP Heavy Duty Aluminum Flatbed",
+                saved: false
+            }
+        ];
+
+        let selectedPostForOptions = null;
+        let activeStoryIndex = 0;
+        let storyTimer = null;
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-screen').forEach(el => el.classList.add('hidden'));
+
+            const homeBtn = document.getElementById('nav-btn-home');
+            const searchBtn = document.getElementById('nav-btn-search');
+
+            if (tab === 'home') {
+                document.getElementById('home-screen').classList.remove('hidden');
+                homeBtn.className = "text-xl text-black dark:text-white hover:opacity-70 transition";
+                searchBtn.className = "text-xl text-gray-400 dark:text-neutral-500 hover:text-black dark:hover:text-white transition";
+            } else if (tab === 'search') {
+                document.getElementById('search-screen').classList.remove('hidden');
+                searchBtn.className = "text-xl text-pink-500 hover:opacity-70 transition";
+                homeBtn.className = "text-xl text-gray-400 dark:text-neutral-500 hover:text-black dark:hover:text-white transition";
+            }
+        }
+
+        function onCategoryCardClick(categoryName) {
+            showToast(`Selected: ${categoryName} category!`);
+            // Custom trigger ready for next action screen
+        }
+
+        function renderStories() {
+            const container = document.getElementById('stories-container');
+            container.innerHTML = '';
+
+            storiesData.forEach((story, idx) => {
+                const wrapper = document.createElement('div');
+                wrapper.className = 'flex flex-col items-center gap-1 cursor-pointer min-w-[68px] text-center shrink-0';
+
+                if (story.isUser) {
+                    wrapper.onclick = () => openCreatePostModal();
+                    wrapper.innerHTML = `
+                        <div class="relative w-16 h-16 rounded-full p-0.5 border-2 border-gray-200 dark:border-neutral-800">
+                            <img src="${story.avatar}" class="w-full h-full rounded-full object-cover">
+                            <div class="absolute bottom-0 right-0 w-5 h-5 rounded-full bg-blue-500 text-white border-2 border-white dark:border-black flex items-center justify-center text-xs font-bold">
+                                +
+                            </div>
+                        </div>
+                        <span class="text-[11px] text-gray-800 dark:text-gray-200 truncate w-16 font-normal">Your story</span>
+                    `;
+                } else {
+                    wrapper.onclick = () => openStoryModal(idx);
+                    wrapper.innerHTML = `
+                        <div class="w-16 h-16 rounded-full ig-story-border">
+                            <img src="${story.avatar}" class="w-full h-full rounded-full object-cover border-2 border-white dark:border-black">
+                        </div>
+                        <span class="text-[11px] text-gray-800 dark:text-gray-200 truncate w-16 font-normal">${story.username}</span>
+                    `;
+                }
+                container.appendChild(wrapper);
+            });
+        }
+
+        function renderPosts(data) {
+            const feed = document.getElementById('posts-feed');
+            feed.innerHTML = '';
+
+            if (data.length === 0) {
+                feed.innerHTML = `
+                    <div class="text-center py-12 text-gray-400 text-xs">
+                        No commercial vehicles in this filter.
+                    </div>
+                `;
+                return;
+            }
+
+            data.forEach(post => {
+                const article = document.createElement('article');
+                article.id = `post-card-${post.id}`;
+                article.className = 'bg-white dark:bg-black transition-all duration-300';
+
+                const totalImgs = post.images.length;
+                
+                // Enforce strictly 50 characters for vehicle info
+                const truncatedAbout = post.description.length > 50 
+                    ? post.description.substring(0, 50) 
+                    : post.description;
+
+                article.innerHTML = `
+                    <!-- 1. POST HEADER (Left: Profile + Location | Right: 3 Dots for Not Interested) -->
+                    <div class="px-3 py-2.5 flex items-center justify-between">
+                        <div class="flex items-center gap-2.5">
+                            <img src="${post.avatar}" class="w-8 h-8 rounded-full object-cover border border-gray-200 dark:border-neutral-800">
+                            <div class="leading-tight">
+                                <h4 class="font-bold text-xs text-black dark:text-white flex items-center gap-1">
+                                    ${post.username}
+                                    ${post.verified ? '<i class="fa-solid fa-circle-check text-blue-500 text-[10px]"></i>' : ''}
+                                </h4>
+                                <p class="text-[10px] text-gray-500 font-normal">${post.location}</p>
+                            </div>
+                        </div>
+
+                        <button onclick="openOptionsSheet(${post.id})" class="text-black dark:text-white px-2 py-1 hover:opacity-60 transition">
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </button>
+                    </div>
+
+                    <!-- 2. PHOTO MEDIA AREA (ZERO TEXT OVERLAY ON PHOTO) -->
+                    <div class="relative w-full aspect-square bg-neutral-900 overflow-hidden">
+                        <img id="post-img-${post.id}" src="${post.images[post.currentImgIndex]}" class="w-full h-full object-cover">
+                        
+                        ${totalImgs > 1 ? `
+                            <div class="absolute top-3 right-3 px-2 py-0.5 bg-black/70 rounded-full text-white text-[10px] font-medium backdrop-blur-xs">
+                                ${post.currentImgIndex + 1}/${totalImgs}
+                            </div>
+                        ` : ''}
+
+                        <div class="absolute bottom-3 left-3 w-6 h-6 rounded-full bg-black/60 backdrop-blur-xs text-white flex items-center justify-center text-[10px]">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <div class="absolute bottom-3 right-3 w-6 h-6 rounded-full bg-black/60 backdrop-blur-xs text-white flex items-center justify-center text-[10px]">
+                            <i class="fa-solid fa-volume-xmark"></i>
+                        </div>
+                    </div>
+
+                    <!-- 3. POST ACTION BAR (STRICTLY NO LIKES, NO COMMENTS) -->
+                    <div class="px-3 py-2 flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2 flex-1">
+                            <button onclick="openRequestModal(${post.id})" class="ig-gradient-btn text-white px-3 py-1.5 rounded-xl text-xs font-bold flex items-center gap-1.5 shadow-xs active:scale-95 transition">
+                                <i class="fa-solid fa-bolt text-[11px]"></i> Send Request
+                            </button>
+
+                            <button onclick="openChatWithVehiclePost(${post.id})" class="bg-gray-100 dark:bg-neutral-900 text-black dark:text-white px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 border border-gray-200 dark:border-neutral-800 transition">
+                                <i class="fa-solid fa-paper-plane text-[11px]"></i> Message
+                            </button>
+
+                            <button onclick="openShareModal(${post.id})" class="bg-gray-100 dark:bg-neutral-900 text-black dark:text-white p-1.5 rounded-xl text-xs border border-gray-200 dark:border-neutral-800">
+                                <i class="fa-solid fa-share-nodes"></i>
+                            </button>
+                        </div>
+
+                        <button onclick="toggleSavePost(${post.id})" class="text-black dark:text-white p-1 text-lg">
+                            <i class="${post.saved ? 'fa-solid text-amber-500' : 'fa-regular'} fa-bookmark"></i>
+                        </button>
+                    </div>
+
+                    <!-- 4. VEHICLE DESCRIPTION (STRICTLY 50 CHARACTERS MAX) -->
+                    <div class="px-3 pb-3 space-y-1 text-xs">
+                        <p class="text-gray-900 dark:text-gray-100 leading-snug">
+                            <span class="font-bold mr-1.5">${post.username}</span>
+                            <span class="text-gray-700 dark:text-gray-300">${truncatedAbout}</span>
+                        </p>
+                        <p class="text-[10px] text-gray-400 font-normal uppercase">${post.timeAgo}</p>
+                    </div>
+                `;
+
+                feed.appendChild(article);
+            });
+        }
+
+        function openOptionsSheet(postId) {
+            selectedPostForOptions = postId;
+            document.getElementById('options-sheet').classList.remove('hidden');
+        }
+
+        function closeOptionsSheet() {
+            document.getElementById('options-sheet').classList.add('hidden');
+        }
+
+        function handleNotInterested() {
+            if (!selectedPostForOptions) return;
+            const postId = selectedPostForOptions;
+            closeOptionsSheet();
+
+            const card = document.getElementById(`post-card-${postId}`);
+            if (card) {
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    postsData = postsData.filter(p => p.id !== postId);
+                    renderPosts(postsData);
+                    showToast('Post hidden from your feed (Not Interested).');
+                }, 250);
+            }
+        }
+
+        function copyPostLinkFromSheet() {
+            closeOptionsSheet();
+            showToast('Post link copied to clipboard!');
+        }
+
+        function openStoryModal(index) {
+            activeStoryIndex = index;
+            const story = storiesData[activeStoryIndex];
+            if (story.isUser) return;
+
+            document.getElementById('story-user-img').src = story.avatar;
+            document.getElementById('story-username').innerText = story.username;
+            document.getElementById('story-time').innerText = story.time;
+            document.getElementById('story-media').src = story.media;
+            document.getElementById('story-caption').innerText = story.caption;
+            document.getElementById('story-tag').innerText = story.tag;
+
+            document.getElementById('story-modal').classList.remove('hidden');
+
+            const bar = document.getElementById('story-progress-bar');
+            bar.classList.remove('animate-story-progress');
+            void bar.offsetWidth;
+            bar.classList.add('animate-story-progress');
+
+            clearTimeout(storyTimer);
+            storyTimer = setTimeout(() => nextStory(), 5000);
+        }
+
+        function nextStory() {
+            if (activeStoryIndex < storiesData.length - 1) {
+                openStoryModal(activeStoryIndex + 1);
+            } else {
+                closeStoryModal();
+            }
+        }
+
+        function closeStoryModal() {
+            document.getElementById('story-modal').classList.add('hidden');
+            clearTimeout(storyTimer);
+        }
+
+        function sendStoryReply() {
+            const input = document.getElementById('story-reply-input');
+            if (input.value.trim() !== '') {
+                showToast(`Reply sent to ${storiesData[activeStoryIndex].username}`);
+                input.value = '';
+                closeStoryModal();
+            }
+        }
+
+        function openRequestModal(postId) {
+            const post = postsData.find(p => p.id === postId);
+            if (!post) return;
+
+            document.getElementById('req-truck-img').src = post.images[0];
+            document.getElementById('req-truck-title').innerText = post.description;
+            document.getElementById('req-truck-driver').innerText = `Carrier: ${post.username}`;
+
+            document.getElementById('request-modal').classList.remove('hidden');
+        }
+
+        function closeRequestModal() {
+            document.getElementById('request-modal').classList.add('hidden');
+        }
+
+        function handleRequestSubmit(e) {
+            e.preventDefault();
+            closeRequestModal();
+            showToast('🚛 Commercial Request submitted to carrier!');
+        }
+
+        function openChatModal() {
+            document.getElementById('chat-modal').classList.remove('hidden');
+            renderChatMessages();
+        }
+
+        function closeChatModal() {
+            document.getElementById('chat-modal').classList.add('hidden');
+        }
+
+        function openChatWithVehiclePost(postId) {
+            const post = postsData.find(p => p.id === postId);
+            if (!post) return;
+
+            document.getElementById('chat-active-name').innerText = post.username;
+            document.getElementById('chat-active-img').src = post.avatar;
+
+            openChatModal();
+        }
+
+        function renderChatMessages() {
+            const container = document.getElementById('chat-messages-container');
+            container.innerHTML = `
+                <div class="flex justify-start">
+                    <div class="bg-gray-200 dark:bg-neutral-800 text-gray-900 dark:text-white rounded-2xl px-3.5 py-2 text-xs">
+                        Hello! Let us know your route and cargo requirement.
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleSendMessage(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const text = input.value.trim();
+            if (!text) return;
+
+            const container = document.getElementById('chat-messages-container');
+            const bubble = document.createElement('div');
+            bubble.className = 'flex justify-end';
+            bubble.innerHTML = `
+                <div class="ig-gradient-btn text-white rounded-2xl px-3.5 py-2 text-xs">
+                    ${text}
+                </div>
+            `;
+            container.appendChild(bubble);
+            input.value = '';
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function openShareModal(postId) {
+            document.getElementById('share-modal').classList.remove('hidden');
+        }
+
+        function closeShareModal() {
+            document.getElementById('share-modal').classList.add('hidden');
+        }
+
+        function copyShareLink() {
+            closeShareModal();
+            showToast('Link copied!');
+        }
+
+        function shareViaApp(name) {
+            closeShareModal();
+            showToast(`Shared via ${name}`);
+        }
+
+        function openCreatePostModal() {
+            document.getElementById('create-modal').classList.remove('hidden');
+        }
+
+        function closeCreatePostModal() {
+            document.getElementById('create-modal').classList.add('hidden');
+        }
+
+        function handleCreatePostSubmit(e) {
+            e.preventDefault();
+            const title = document.getElementById('new-truck-title').value;
+            const category = document.getElementById('new-truck-category').value;
+            const location = document.getElementById('new-truck-location').value;
+            const caption = document.getElementById('new-truck-caption').value;
+
+            const truncatedCaption = caption.length > 50 ? caption.substring(0, 50) : caption;
+
+            const newPost = {
+                id: Date.now(),
+                username: "your_fleet",
+                verified: true,
+                location: location,
+                avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=150",
+                category: category,
+                timeAgo: "Just now",
+                images: ["https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?auto=format&fit=crop&q=80&w=1000"],
+                currentImgIndex: 0,
+                description: truncatedCaption,
+                saved: false
+            };
+
+            postsData.unshift(newPost);
+            renderPosts(postsData);
+            closeCreatePostModal();
+            showToast('🚛 Truck post published!');
+        }
+
+        function filterPosts(cat) {
+            if (cat === 'all') {
+                renderPosts(postsData);
+            } else {
+                renderPosts(postsData.filter(p => p.category === cat));
+            }
+        }
+
+        function toggleSavePost(id) {
+            const p = postsData.find(post => post.id === id);
+            if (p) {
+                p.saved = !p.saved;
+                renderPosts(postsData);
+                showToast(p.saved ? 'Saved to bookmarks' : 'Removed from bookmarks');
+            }
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            html.classList.toggle('dark');
+            showToast(html.classList.contains('dark') ? 'Switched to Dark Theme' : 'Switched to Light Theme');
+        }
+
+        function showToast(msg) {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = 'bg-black text-white dark:bg-white dark:text-black text-xs font-semibold px-4 py-2.5 rounded-full shadow-2xl flex items-center gap-2 border border-neutral-700 dark:border-neutral-200 pointer-events-auto justify-center text-center animate-bounce';
+            toast.innerHTML = `<i class="fa-solid fa-circle-check text-pink-500"></i> ${msg}`;
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.remove();
+            }, 3000);
+        }
+
+        window.onload = function() {
+            renderStories();
+            renderPosts(postsData);
+        };
+    </script>
+</body>
+</html>

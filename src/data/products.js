@@ -1,14 +1,25 @@
 
-import diary01 from "../images/diary-01.png";
-import diary02 from "../images/diary-02.png";
-import diary03 from "../images/diary-03.png";
-import diary04 from "../images/diary-04.png";
-import diary05 from "../images/diary-05.png";
-import diary06 from "../images/diary-06.png";
-import diary07 from "../images/diary-07.png";
-import diary08 from "../images/diary-08.png";
-import diary09 from "../images/diary-09.png";
-import diary10 from "../images/diary-10.png";
+import diary01 from "../images/book-1.png";
+import diary02 from "../images/book-2.png";
+import diary03 from "../images/book-3.png";
+import diary04 from "../images/book-4.png";
+import diary05 from "../images/book-5.png";
+import diary06 from "../images/book-6.png";
+import diary07 from "../images/book-7.png";
+import diary08 from "../images/book-8.png";
+import diary09 from "../images/book-9.png";
+import diary10 from "../images/book-10.png";
+import diary11 from "../images/book-11.png";
+import diary12 from "../images/book-12.png";
+import diary13 from "../images/book-13.png";
+import diary14 from "../images/book-14.png";
+import diary15 from "../images/book-15.png";
+import diary16 from "../images/book-16.png";
+import diary17 from "../images/book-17.png";
+import diary18 from "../images/book-18.png";
+import diary19 from "../images/book-19.png";
+import diary20 from "../images/book-20.png";
+import diary21 from "../images/book-21.png";
 
 export const products = [
   {
@@ -57,7 +68,7 @@ export const products = [
     name: "Minimal Notebook",
     category: "Notebook",
     description: "Clean and simple pages for everyday thoughts and ideas.",
-    image: diary06,
+    image: diary18,
   },
   {
     id: "creative-sketchbook",
@@ -97,7 +108,7 @@ export const products = [
     name: "Classic Journal",
     category: "Journal",
     description: "A timeless everyday diary for thoughts, notes and memories.",
-    image: diary01,
+    image: diary11,
   },
 
   {
@@ -106,7 +117,7 @@ export const products = [
     name: "Midnight Diary",
     category: "Premium Diary",
     description: "A deep, elegant diary made for late-night ideas and reflections.",
-    image: diary02,
+    image: diary12,
   },
 
   {
@@ -115,7 +126,7 @@ export const products = [
     name: "Signature Journal",
     category: "Premium Journal",
     description: "A refined journal designed for important ideas and personal plans.",
-    image: diary03,
+    image: diary13,
   },
 
   {
@@ -124,7 +135,7 @@ export const products = [
     name: "Daily Planner",
     category: "Planner",
     description: "Organise your days, priorities and goals in one beautiful place.",
-    image: diary04,
+    image: diary14,
   },
 
   {
@@ -133,7 +144,7 @@ export const products = [
     name: "Travel Diary",
     category: "Travel",
     description: "Keep every journey, destination and unforgettable moment.",
-    image: diary05,
+    image: diary15,
   },
 
   {
@@ -142,7 +153,7 @@ export const products = [
     name: "Minimal Notebook",
     category: "Notebook",
     description: "Clean and simple pages for everyday thoughts and ideas.",
-    image: diary06,
+    image: diary16,
   },
 
   {
@@ -151,7 +162,7 @@ export const products = [
     name: "Creative Sketchbook",
     category: "Sketchbook",
     description: "A spacious canvas for sketches, concepts and creative experiments.",
-    image: diary07,
+    image: diary17,
   },
 
   {
@@ -160,7 +171,7 @@ export const products = [
     name: "Leather Notebook",
     category: "Luxury",
     description: "A premium notebook with a sophisticated timeless character.",
-    image: diary08,
+    image: diary06,
   },
 
   {
@@ -169,7 +180,7 @@ export const products = [
     name: "Memory Book",
     category: "Memory",
     description: "A special place to preserve stories, photographs and memories.",
-    image: diary09,
+    image: diary19,
   },
 
   {
@@ -178,7 +189,15 @@ export const products = [
     name: "Executive Diary",
     category: "Executive",
     description: "A professional diary designed for meetings, plans and business notes.",
-    image: diary10,
+    image: diary20,
+  },
+  {
+    id: "executive-diary-2",
+    number: "20",
+    name: "Executive Diary",
+    category: "Executive",
+    description: "A professional diary designed for meetings, plans and business notes.",
+    image: diary21,
   },
 ];
 

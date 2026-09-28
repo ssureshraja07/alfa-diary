@@ -162,7 +162,7 @@ export default function Products() {
             <span>Browse our complete collection</span>
           </div>
 
-          <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-9 lg:gap-10">
 
             {filteredProducts.map((product, index) => (
               <div

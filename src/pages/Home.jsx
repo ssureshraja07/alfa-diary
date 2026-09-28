@@ -123,14 +123,14 @@ export default function Home() {
               </p>
 
               <div className="grid grid-cols-2 gap-4 pt-2">
-                <div className="rounded-2xl border border-[#E8DDCB] bg-[#F6F1E7]/50 p-4">
+                <div className="rounded-2xl border border-[#E8DDCB] bg-[#F6F1E7]/50 p-5 sm:p-6 shadow-sm">
                   <span className="font-mono text-xs font-bold text-[#C05A3E]">01 / SPINE</span>
-                  <h4 className="mt-1 font-bold text-sm text-[#26211E]">Smyth-Sewn Signatures</h4>
+                  <h4 className="mt-1.5 font-bold text-sm sm:text-base text-[#26211E]">Smyth-Sewn Signatures</h4>
                   <p className="mt-1 text-xs text-[#7D6B5A]">Woven with pure waxed linen thread.</p>
                 </div>
-                <div className="rounded-2xl border border-[#E8DDCB] bg-[#F6F1E7]/50 p-4">
+                <div className="rounded-2xl border border-[#E8DDCB] bg-[#F6F1E7]/50 p-5 sm:p-6 shadow-sm">
                   <span className="font-mono text-xs font-bold text-[#587989]">02 / PAPER</span>
-                  <h4 className="mt-1 font-bold text-sm text-[#26211E]">120 GSM Cotton Vellum</h4>
+                  <h4 className="mt-1.5 font-bold text-sm sm:text-base text-[#26211E]">120 GSM Cotton Vellum</h4>
                   <p className="mt-1 text-xs text-[#7D6B5A]">Feather-resistant to fountain pen inks.</p>
                 </div>
               </div>
@@ -147,7 +147,7 @@ export default function Home() {
             </div>
 
             <div className="lg:col-span-6">
-              <div className="relative rounded-[2.5rem] border border-[#E8DDCB] bg-gradient-to-br from-[#F9EFEA] via-[#E8DDCB] to-[#E6EFF2] p-8 sm:p-12 shadow-inner">
+              <div className="relative rounded-[2.75rem] border border-[#E8DDCB] bg-gradient-to-br from-[#F9EFEA] via-[#E8DDCB] to-[#E6EFF2] p-8 sm:p-14 shadow-inner">
                 <div className="space-y-6">
                   <div className="flex items-center gap-3">
                     <span className="h-3 w-3 rounded-full bg-[#C05A3E]" />
