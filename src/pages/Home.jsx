@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
-import { 
-  ArrowRight, 
-  Palette, 
-  Calendar 
+import {
+  ArrowRight,
+  Palette,
+  Calendar
 } from "lucide-react";
 
 import ScrollRevealDiaries from "../components/ScrollRevealDiaries";
@@ -16,10 +16,10 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-[#F6F1E7] text-[#26211E]">
-      
+
       {/* ================= HERO SECTION (4+ 2027 DIARIES ON RIGHT BG) ================= */}
       <section className="relative min-h-[95vh] overflow-hidden pt-20 flex items-center">
-        
+
         {/* Background Image: 4+ Diaries set on the right side of desk */}
         <div className="absolute inset-0 z-0">
           <img
@@ -35,9 +35,9 @@ export default function Home() {
 
         {/* Hero Content Grid: Left side text, leaving right side open to showcase diaries */}
         <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-16 sm:py-24">
-          
+
           <div className="max-w-2xl space-y-6">
-            
+
             {/* 2027 New Collection Pill */}
             <div className="inline-flex items-center gap-2 rounded-full border border-[#C05A3E]/30 bg-white/95 px-4 py-1.5 text-xs font-black uppercase tracking-widest text-[#C05A3E] shadow-sm backdrop-blur-md">
               <Calendar size={14} className="text-[#C05A3E]" />
@@ -57,7 +57,7 @@ export default function Home() {
 
             {/* Description */}
             <p className="max-w-xl text-base leading-relaxed text-[#7D6B5A] sm:text-lg">
-        Alfa Diaries Pvt Ltd has been the only choice for those who understand that stationery is not just a necessity, but a companion, an object of joy and a personality statement.            </p>
+              Alfa Diaries Pvt Ltd has been the only choice for those who understand that stationery is not just a necessity, but a companion, an object of joy and a personality statement.            </p>
 
             {/* Action Buttons */}
             <div className="flex flex-wrap items-center gap-4 pt-2">
