@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
-import { ArrowLeft, ArrowUpRight, Search, Sparkles, BookOpen, Layers, Check, Calendar } from "lucide-react";
-import { useState, useRef } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { ArrowLeft, ArrowUpRight, Sparkles, BookOpen, Layers, Check, Calendar } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
 import useScrollReveal from "../hooks/useScrollReveal";
 
 import ProductCard from "../components/ProductCard";
@@ -12,30 +12,48 @@ import collectionDiariesImg from "../images/collection-diaries-hero.jpg";
 export default function Products() {
   useScrollReveal();
 
-  const [filterCategory, setFilterCategory] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const categoryParam = searchParams.get("category");
+  const [filterCategory, setFilterCategory] = useState(categoryParam || "all");
   const gridRef = useRef(null);
+
+  // Sync state if URL query param changes
+  useEffect(() => {
+    if (categoryParam) {
+      setFilterCategory(categoryParam);
+      setTimeout(() => {
+        gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 150);
+    } else {
+      setFilterCategory("all");
+    }
+  }, [categoryParam]);
 
   const handleFilter = (categoryId) => {
     setFilterCategory(categoryId);
+    if (categoryId === "all") {
+      setSearchParams({});
+    } else {
+      setSearchParams({ category: categoryId });
+    }
     // Scroll to the top of the products grid
     gridRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   };
 
   const categories = [
-    { id: "all", name: "All Folios" },
-    { id: "Journal", name: "Journals" },
-    { id: "Premium Diary", name: "Premium Diaries" },
-    { id: "Planner", name: "Planners" },
-    { id: "Travel", name: "Travel & Expedition" },
-    { id: "Luxury", name: "Luxury Leather" },
+    { id: "all", name: "All" },
+    { id: "Executive Diary", name: "Executive Diary" },
+    { id: "Universe Diary", name: "Universe Diary" },
+    { id: "Elegant Diary", name: "Elegant Diary" },
+    { id: "Supreme Diary", name: "Supreme Diary" },
+    { id: "Majestic Diary", name: "Majestic Diary" },
+    { id: "Diamond Diary", name: "Diamond Diary" },
+    { id: "B5 Journal", name: "B5 Journal" },
+    { id: "A5 Journal", name: "A5 Journal" },
   ];
 
   const filteredProducts = products.filter((p) => {
-    const matchesCategory = filterCategory === "all" || p.category === filterCategory;
-    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                          p.description?.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    return filterCategory === "all" || p.category === filterCategory;
   });
 
   return (
@@ -112,37 +130,25 @@ export default function Products() {
 
       </section>
 
-      {/* ================= FILTER & SEARCH BAR ================= */}
+      {/* ================= FILTER BAR (SEARCH BAR REMOVED) ================= */}
       <section className="reveal-on-scroll sticky top-20 z-40 mt-8 border-y border-[#E8DDCB] bg-[#F6F1E7]/92 px-6 py-4 backdrop-blur-md">
-        <div className="mx-auto flex max-w-7xl flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mx-auto flex max-w-7xl items-center justify-center">
           
           {/* Category Tabs */}
-          <div className="flex flex-wrap items-center gap-2">
+          <div className="flex flex-wrap items-center justify-center gap-2.5">
             {categories.map((c) => (
               <button
                 key={c.id}
                 onClick={() => handleFilter(c.id)}
-                className={`rounded-full px-4 py-1.5 text-xs font-bold transition-all duration-200 ${
+                className={`rounded-full px-4 sm:px-5 py-2 text-xs font-bold transition-all duration-200 ${
                   filterCategory === c.id
-                    ? "bg-[#C05A3E] text-white shadow-sm"
-                    : "border border-[#E8DDCB] bg-white text-[#7D6B5A] hover:bg-[#EDE4D3]"
+                    ? "bg-[#C05A3E] text-white shadow-md scale-105"
+                    : "border border-[#E8DDCB] bg-white text-[#7D6B5A] hover:border-[#C05A3E] hover:text-[#C05A3E] hover:bg-[#EDE4D3]/50"
                 }`}
               >
                 {c.name}
               </button>
             ))}
-          </div>
-
-          {/* Search Box */}
-          <div className="relative min-w-[260px]">
-            <Search size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#7D6B5A]" />
-            <input
-              type="text"
-              placeholder="Search by name, paper or binding..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full rounded-full border border-[#E8DDCB] bg-white py-2 pl-9 pr-4 text-xs text-[#26211E] placeholder-[#7D6B5A]/60 outline-none transition focus:border-[#C05A3E] focus:ring-1 focus:ring-[#C05A3E]"
-            />
           </div>
 
         </div>
@@ -179,16 +185,13 @@ export default function Products() {
           {filteredProducts.length === 0 && (
             <div className="py-20 text-center">
               <p className="text-base font-bold text-[#7D6B5A]">
-                No journals matched your search.
+                No diaries found in this collection.
               </p>
               <button
-                onClick={() => {
-                  setFilterCategory("all");
-                  setSearchQuery("");
-                }}
-                className="mt-4 rounded-full bg-[#C05A3E] px-5 py-2 text-xs font-bold text-white"
+                onClick={() => setFilterCategory("all")}
+                className="mt-4 rounded-full bg-[#C05A3E] px-6 py-2.5 text-xs font-bold text-white shadow-md transition hover:bg-[#8F3720]"
               >
-                Reset Filters
+                Show All Folios
               </button>
             </div>
           )}

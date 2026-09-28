@@ -36,33 +36,36 @@ export default function ProductCard({ product }) {
       {/* ================= PRODUCT INFO ================= */}
       <div className="px-2 pb-2 pt-6">
         
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <p 
-              className="text-[11px] font-bold uppercase tracking-[0.25em]"
-              style={{ color: accentColor }}
-            >
-              Hand-Bound Folio
-            </p>
+        <div>
+          <p 
+            className="text-[11px] font-bold uppercase tracking-[0.25em]"
+            style={{ color: accentColor }}
+          >
+            Hand-Bound Folio
+          </p>
 
-            <h3 className="mt-1.5 text-xl sm:text-2xl font-bold text-[#26211E] font-serif leading-snug">
-              {product.name}
-            </h3>
-          </div>
-
-          {product.price && (
-            <span 
-              className="pt-1 text-base sm:text-lg font-extrabold"
-              style={{ color: accentColor }}
-            >
-              {product.price}
-            </span>
-          )}
+          <h3 className="mt-1.5 text-xl sm:text-2xl font-bold text-[#26211E] font-serif leading-snug">
+            {product.name}
+          </h3>
         </div>
 
-        <p className="mt-2.5 text-xs sm:text-sm leading-relaxed text-[#7D6B5A] line-clamp-2">
-          {product.description}
-        </p>
+        {/* 4-Line Technical Specifications (Code, Cover, Finish, Inner) — Price removed as requested */}
+        <div className="mt-4 rounded-2xl border border-[#E8DDCB] bg-[#FDFBF7] p-3.5 text-xs">
+          <div className="space-y-1">
+            <p className="font-mono font-bold" style={{ color: accentColor }}>
+              {product.code || `Code : SPU - ${100 + parseInt(product.number, 10)}`}
+            </p>
+            <p className="font-semibold text-[#26211E]">
+              {product.cover || "Soft PU cover"}
+            </p>
+            <p className="text-[#7D6B5A]">
+              {product.finish || "Debossed"}
+            </p>
+            <p className="text-[#7D6B5A]">
+              {product.inner || "2 colour Inner"}
+            </p>
+          </div>
+        </div>
 
         {/* Bottom Hover Line */}
         <div 
