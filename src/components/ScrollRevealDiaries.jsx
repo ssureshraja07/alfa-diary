@@ -291,25 +291,7 @@ export default function ScrollRevealDiaries() {
 
         </div>
 
-        {/* Bottom CTA to View All Products */}
-        <div className="mt-24 text-center">
-          <div className="inline-flex flex-col sm:flex-row items-center gap-5 rounded-3xl border border-[#E8DDCB] bg-white p-6 sm:p-8 shadow-md">
-            <div className="text-left max-w-lg">
-              <h4 className="text-xl font-bold text-[#26211E] font-serif">
-                Browse our complete 2027 collection
-              </h4>
-              <p className="mt-1 text-xs text-[#7D6B5A]">
-                Explore all 21 models including Executive, Universe, Elegant, Supreme, Majestic, Diamond, and B5 & A5 Journals.
-              </p>
-            </div>
-            <Link
-              to="/products"
-              className="rounded-full bg-[#26211E] px-8 py-3.5 text-xs font-bold uppercase tracking-wider text-white shadow-md transition duration-300 hover:bg-[#C05A3E] hover:shadow-lg shrink-0"
-            >
-              View All 21 Folios
-            </Link>
-          </div>
-        </div>
+       
 
       </div>
     </section>

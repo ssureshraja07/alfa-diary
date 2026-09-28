@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { BookOpen, Menu, X, ArrowUpRight } from "lucide-react";
+import { Menu, X, ArrowUpRight } from "lucide-react";
+import alfaLogo from "../images/alfa_logo.png";
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -73,14 +74,14 @@ export default function Navbar() {
         <Link
           to="/"
           onClick={(e) => handleNavClick(e, "/")}
-          className="flex items-center gap-2 text-xl font-black tracking-[0.2em] text-[#26211E] transition hover:opacity-90"
+          className="flex items-center transition hover:opacity-90"
         >
-          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#C05A3E] text-white shadow-xs">
-            <BookOpen size={16} />
-          </span>
-          <span className="font-serif tracking-widest text-lg sm:text-xl">
-            ALFA DIARY<span className="text-[#C05A3E]">.</span>
-          </span>
+          <img
+            src={alfaLogo}
+            alt="Alfa Diaries Logo"
+            className="h-19.5 w-auto object-contain"
+            style={{ filter: "drop-shadow(0 1px 3px rgba(0,0,0,0.12))" }}
+          />
         </Link>
 
         {/* Desktop Navigation Links */}
