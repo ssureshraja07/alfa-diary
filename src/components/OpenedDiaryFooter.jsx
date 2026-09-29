@@ -24,7 +24,6 @@ export default function OpenedDiaryFooter() {
 
   const emailAddresses = [
     { label: "Ashwin.alfadiaries@gmail.com", href: "mailto:Ashwin.alfadiaries@gmail.com" },
-    { label: "ashwin@alfadiaries.in", href: "mailto:ashwin@alfadiaries.in" },
     { label: "alfadiaries@gmail.com", href: "mailto:slfadiaries@gmail.com" },
   ];
 
