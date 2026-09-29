@@ -65,33 +65,17 @@ export default function Home() {
                 to="/products"
                 className="group flex items-center gap-2 rounded-full bg-[#C05A3E] px-8 py-4 text-xs font-bold uppercase tracking-widest text-white shadow-lg transition duration-300 hover:-translate-y-0.5 hover:bg-[#8F3720] hover:shadow-xl"
               >
-                <span>Explore 2027 Folios</span>
+                <span>Explore 2027 Catalog</span>
                 <ArrowRight size={15} className="transition group-hover:translate-x-1" />
               </Link>
 
               <Link
-                to="/gallery"
+                to="/products"
                 className="flex items-center gap-2 rounded-full border border-[#7D6B5A]/30 bg-white/90 px-7 py-4 text-xs font-bold uppercase tracking-widest text-[#26211E] shadow-sm transition hover:border-[#C05A3E] hover:text-[#C05A3E]"
               >
                 <Palette size={15} className="text-[#587989]" />
                 <span>View 2027 Lookbook</span>
               </Link>
-            </div>
-
-            {/* Key Quality Micro-badges */}
-            <div className="flex flex-wrap items-center gap-6 pt-4 text-xs font-semibold text-[#7D6B5A]">
-              <div className="flex items-center gap-2">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#C05A3E]" />
-                <span>120–160 GSM Cotton Rag</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#587989]" />
-                <span>180° Lay-Flat Guarantee</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#E8DDCB] border border-black/20" />
-                <span>National & International Standards</span>
-              </div>
             </div>
           </div>
         </div>

@@ -17,7 +17,7 @@ export default function ScrollRevealDiaries() {
   // Exactly 6 representative books for the 6 core diary editions
   const showcaseItems = [
     {
-      ...products[0], // Executive Diary (1st book)
+      ...products[18], // Executive Diary (1st book)
       categoryTitle: "Executive Diary",
       chapter: "Chapter 01",
       tagline: "The Premium Executive Collection (5 Models)",
@@ -27,7 +27,7 @@ export default function ScrollRevealDiaries() {
       itemCount: 5,
     },
     {
-      ...products[5], // Universe Diary (2nd book)
+      ...products[17], // Universe Diary (2nd book)
       categoryTitle: "Universe Diary",
       chapter: "Chapter 02",
       tagline: "The Celestial Cosmic Collection (4 Models)",
@@ -37,7 +37,7 @@ export default function ScrollRevealDiaries() {
       itemCount: 4,
     },
     {
-      ...products[9], // Elegant Diary (3rd book)
+      ...products[11], // Elegant Diary (3rd book)
       categoryTitle: "Elegant Diary",
       chapter: "Chapter 03",
       tagline: "The Refined Pastel & Ivory Collection (2 Models)",
@@ -47,17 +47,7 @@ export default function ScrollRevealDiaries() {
       itemCount: 2,
     },
     {
-      ...products[11], // Supreme Diary (4th book)
-      categoryTitle: "Supreme Diary",
-      chapter: "Chapter 04",
-      tagline: "The 24K Gold Foil Stamped Collection (2 Models)",
-      accentBg: "from-[#D4AF37]/15 to-[#F6F1E7]",
-      coverColor: "#9A7B2C",
-      direction: "right",
-      itemCount: 2,
-    },
-    {
-      ...products[13], // Majestic Diary (5th book)
+      ...products[9], // Majestic Diary (5th book)
       categoryTitle: "Majestic Diary",
       chapter: "Chapter 05",
       tagline: "The Royal Crest & Velvet Touch Collection (2 Models)",
@@ -67,7 +57,7 @@ export default function ScrollRevealDiaries() {
       itemCount: 2,
     },
     {
-      ...products[15], // Diamond Diary (6th book)
+      ...products[1], // Diamond Diary (6th book)
       categoryTitle: "Diamond Diary",
       chapter: "Chapter 06",
       tagline: "The Geometric Silver Laser Foil Collection (2 Models)",

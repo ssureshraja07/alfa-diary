@@ -22,14 +22,12 @@ import aboutHeroImg from "../images/aboutus-atelier-craft.jpg";
 export default function AboutUs() {
   useScrollReveal();
   const phoneNumbers = [
-    { label: "+91 73975 70456", href: "tel:+917397570456" },
     { label: "+91 94433 74456", href: "tel:+919443374456" },
     { label: "+91 94875 24457", href: "tel:+919487524457" },
   ];
 
   const emailAddresses = [
     { label: "Ashwin.alfadiaries@gmail.com", href: "mailto:Ashwin.alfadiaries@gmail.com" },
-    { label: "Ashwin@alfadiaries.in", href: "mailto:Ashwin@alfadiaries.in" },
     { label: "Alfadiaries@gmail.com", href: "mailto:Alfadiaries@gmail.com" },
   ];
 
@@ -38,7 +36,7 @@ export default function AboutUs() {
     {
       icon: Layers,
       title: "What We Do",
-      subtitle: "Artisan Hand-Binding & Bespoke Manufacturing",
+      subtitle: "Automated Bind Setup",
       desc: "From signature Smyth-sewn threading to customized gold-foil embossing, we manufacture handcrafted stationery tailored to client specifications.",
       accent: "#C05A3E",
     },
