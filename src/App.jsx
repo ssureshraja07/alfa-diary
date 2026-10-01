@@ -11,17 +11,15 @@ import Quality from "./pages/Quality";
 
 function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/alfa-diary">
       <SmoothScroll>
         <Navbar />
 
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/products" element={<Products />} />
-        
           <Route path="/quality" element={<Quality />} />
           <Route path="/aboutus" element={<AboutUs />} />
-          {/* Fallback alias route for about */}
           <Route path="/about" element={<AboutUs />} />
         </Routes>
       </SmoothScroll>
