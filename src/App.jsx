@@ -11,7 +11,7 @@ import Quality from "./pages/Quality";
 
 function App() {
   return (
-    <BrowserRouter basename="/alfa-diary">
+    <BrowserRouter>
       <SmoothScroll>
         <Navbar />
 
