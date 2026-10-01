@@ -16,12 +16,12 @@ function App() {
         <Navbar />
 
         <Routes>
-  <Route path="/" element={<div className="pt-32 text-5xl">HOME TEST</div>} />
-  <Route path="/products" element={<Products />} />
-  <Route path="/quality" element={<Quality />} />
-  <Route path="/aboutus" element={<AboutUs />} />
-  <Route path="/about" element={<AboutUs />} />
-</Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/quality" element={<Quality />} />
+          <Route path="/aboutus" element={<AboutUs />} />
+          <Route path="/about" element={<AboutUs />} />
+        </Routes>
       </SmoothScroll>
     </BrowserRouter>
   );
